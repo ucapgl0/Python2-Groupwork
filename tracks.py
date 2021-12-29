@@ -1,28 +1,29 @@
 import json
-import requests
 import utils
 import matplotlib.pyplot as plt
 import heapq
+import math
 
-def request_data(url):
+path = r"D:\1python\short_tracks.json"
 
-    req = requests.get(url, timeout=30) 
-
-    req_jason = req.json()
-
-    return req_jason
-
+map_size = [300, 300]
 
 def load_tracksfile(path):
-    
-    return
+    track_data = json.load(open(path))
+    start = track_data['metadata']['start']
+    end = track_data['metadata']['end']
+    time = track_data['metadata']['datetime']
+    track = track_data['tracks']
+
+    tracks_object = Tracks(start, end, map_size, time, track)
+    return tracks_object
 # file_name = 'afd'
 # a = load_tracksfile('http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?start_point_x=0&start_point_y=0&end_point_x=10&end_point_y=10&min_steps_straight=2&max_steps_straight=10&n_tracks=10')
 # print(load_tracksfile('http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?start_point_x=0&start_point_y=0&end_point_x=10&end_point_y=10&min_steps_straight=2&max_steps_straight=10&n_tracks=10'))
 # with open(file_name) as file_obj:
 #             json.dump(a,file_obj)
 
-map_size = [300, 300]
+
 
 
 def query_tracks(start, end, min_steps_straight, max_steps_straight, n_tracks, save):
@@ -33,7 +34,7 @@ def query_tracks(start, end, min_steps_straight, max_steps_straight, n_tracks, s
     '&min_steps_straight='+str(min_steps_straight)+'&max_steps_straight='+str(max_steps_straight)+\
     '&n_tracks='+str(n_tracks)
     
-    track_data = request_data(url)
+    track_data = utils.request_data(url)
     time = track_data['metadata']['datetime']
     track = track_data['tracks']
 
@@ -99,25 +100,28 @@ class SingleTrack:
         return corners
 
     def distance(self):
-        
-        len(self.cc)
-        return 
+        self.distances = []
+        for i in range(len(self.cc)):
+            self.distances.append(math.sqrt(((self.elevation[i+1]-self.elevation[i])*0.001)**2 + 1)) 
+        return sum(self.distances)
 
     def time(self):
         time = 0
         for i in range(len(self.cc)):
-            if self.cc[i] == 'r':
-                time += 1/30
-            if self.cc[i] == 'l':
-                time += 1/80
-            if self.cc[i] == 'm':
-                time += 1/120
+            if self.road[i] == 'r':
+                time += self.distances[i]/30
+            if self.road[i] == 'l':
+                time += self.distances[i]/80
+            if self.road[i] == 'm':
+                time += self.distances[i]/120
         return time
 
     def co2(self):
         co2 = 0
-        for 
-        return
+        for i in range(len(self.cc)):
+            elevation_change = self.elevation[i+1]-self.elevation[i]
+            co2 += utils.co2_emission(self.road[i], self.terrain[i], elevation_change, self.distances[i])
+        return co2
 
     
 
@@ -140,7 +144,7 @@ class Tracks:
         self.single_track = []
         co2 = []
         for i in range(len(self.tracks)):
-            self.single_track.append(SingleTrack(self.start, self.tracks[i]['cc'],
+            self.single_track.append(SingleTrack(self.start, self.end, self.tracks[i]['cc'],
                                     self.tracks[i]['roads'], self.tracks[i]['terrain'],
                                     self.tracks[i]['elevation']))
             co2.append(self.single_track[i].co2()) 
