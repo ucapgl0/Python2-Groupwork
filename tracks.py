@@ -5,7 +5,6 @@ import heapq
 import math
 
 
-#path = r"D:\1python\short_tracks.json"
 
 map_size = [300, 300]
 
@@ -71,7 +70,7 @@ class SingleTrack:
 
     def __str__(self):
         """Return the print form of object"""
-        return "SingleTracks: start at "+str(self.start)+" - "+"{{{}}}".format(str(len(self.cc)))+' steps'
+        return "<SingleTracks: start at "+str(self.start)+" - "+"{{{}}}".format(str(len(self.cc)))+' steps>'
 
     def __len__(self):
         """Return the number of coordinates in the track, including the start and end points."""
@@ -166,7 +165,7 @@ class Tracks:
 
     def __str__(self):
         """Return the print form of object"""
-        return "Tracks: "+"{{{}}}".format(str(len(self.tracks)))+' from '+str(self.start)+' to '+str(self.end)
+        return "<Tracks: "+"{{{}}}".format(str(len(self.tracks)))+' from '+str(self.start)+' to '+str(self.end)+">"
 
     def __len__(self):
         """Return the number of tracks is in the object"""
@@ -222,15 +221,16 @@ class Tracks:
 
 
 # Check
+#path = r"D:\1python\short_tracks.json"
 #local_tracks = load_tracksfile(path)
-# tracks = query_tracks(start=(0, 0), end=(15, 15),
-# n_tracks=10)
+tracks = query_tracks(start=(0, 0), end=(15, 15),
+n_tracks=10)
 
-# print(len(tracks))
-# print(tracks.greenest())
-# print(tracks.fastest())
-# print(tracks.shortest())
-# print(tracks)
+print(len(tracks))
+print(tracks.greenest())
+print(tracks.fastest())
+print(tracks.shortest())
+print(tracks)
 # print(tracks.get_track(5).visualise())
 # print(tracks.get_track(5).corners())
 # print(tracks.get_track(5).distance())

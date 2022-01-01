@@ -1,5 +1,25 @@
 import requests
 
+def validation_load(path):
+    if path.exist() == False:
+        raise ValueError('The path should be vaild')
+
+
+def validation_query(start, end, url):
+
+    if isinstance(start and end, tuple) == False:
+        raise TypeError('The start and end coordinates should be tuple') 
+    if isinstance(start[0] and start[1] and end[0] and end[1], (int, float)) == False:
+        raise TypeError('The elements of start and end coordinates should be number')
+    if start[0] < 0  or start[1] < 0 or end[0] < 0 or end[1] < 0:
+        raise ValueError('The coordinates input should be positive')
+    if start[0] > 299 or start[1] > 299 or end[0] > 299 or end[1] > 299:
+        raise ValueError('The elements of coordinates input should be equal or smaller than 299')
+    try:
+        requests.get(url, timeout=5)
+    except:
+        raise ConnectionError('The internet connection is not working')
+
 def request_data(url):
 
     req = requests.get(url, timeout=30) 
