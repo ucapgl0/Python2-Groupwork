@@ -223,14 +223,14 @@ class Tracks:
 # Check
 #path = r"D:\1python\short_tracks.json"
 #local_tracks = load_tracksfile(path)
-tracks = query_tracks(start=(0, 0), end=(15, 15),
-n_tracks=10)
+# tracks = query_tracks(start=(0, 0), end=(15, 15),
+# n_tracks=10)
 
-print(len(tracks))
-print(tracks.greenest())
-print(tracks.fastest())
-print(tracks.shortest())
-print(tracks)
+# print(len(tracks))
+# print(tracks.greenest())
+# print(tracks.fastest())
+# print(tracks.shortest())
+# print(tracks)
 # print(tracks.get_track(5).visualise())
 # print(tracks.get_track(5).corners())
 # print(tracks.get_track(5).distance())
