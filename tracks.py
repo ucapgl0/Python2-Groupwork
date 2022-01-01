@@ -4,30 +4,38 @@ import matplotlib.pyplot as plt
 import heapq
 import math
 
-path = r"D:\1python\short_tracks.json"
+
+#path = r"D:\1python\short_tracks.json"
 
 map_size = [300, 300]
 
 def load_tracksfile(path):
+    """Return a Tracks object"""
+    utils.validation_load(path)
+
     track_data = json.load(open(path))
     start = track_data['metadata']['start']
     end = track_data['metadata']['end']
     time = track_data['metadata']['datetime']
+    resolution = track_data['metadata']['resolution']
     track = track_data['tracks']
 
-    tracks_object = Tracks(start, end, map_size, time, track)
+    tracks_object = Tracks(start, end, map_size, time, resolution, track)
     return tracks_object
 
 
 
 def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_straight=6, n_tracks=300, save=True):
-
+    """Return a Tracks object"""
+    
     url = 'http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\
     'start_point_x='+str(start[0])+'&start_point_y='+str(start[1])+ \
     '&end_point_x='+str(end[0])+'&end_point_y='+str(end[1])+\
     '&min_steps_straight='+str(min_steps_straight)+'&max_steps_straight='+str(max_steps_straight)+\
     '&n_tracks='+str(n_tracks)
-    
+
+    utils.validation_query(start, end, url)
+
     track_data = utils.request_data(url)
     time = track_data['metadata']['datetime']
     resolution = track_data['metadata']['resolution']
@@ -46,7 +54,7 @@ def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_s
 
 
 class SingleTrack:
-
+    """A class to represent a track's information."""
     def __init__(self, start_point, end_point, resolution, chain_code, road_type, terrain, elevation):
         self.start = start_point
         self.end = end_point
@@ -62,15 +70,17 @@ class SingleTrack:
                                                 + resolution**2))
 
     def __str__(self):
-
+        """Return the print form of object"""
         return "SingleTracks: start at "+str(self.start)+" - "+"{{{}}}".format(str(len(self.cc)))+' steps'
 
     def __len__(self):
-
+        """Return the number of coordinates in the track, including the start and end points."""
         return len(self.elevation)
 
 
     def visualise(self, show = True, filename='my_track.png'):
+        """Visualise/save a graph with a distance vs elevation plot."""
+
         distance = [i for i in range(len(self.elevation))]
        
         plt.subplot(2,2,1)
@@ -93,6 +103,8 @@ class SingleTrack:
         
 
     def corners(self):
+        """Return a list with coordinates of corners, including the start and end points."""
+
         corner = []
         corner.append(self.start)
         for i in range(len(self.cc)-1):
@@ -102,6 +114,8 @@ class SingleTrack:
         return corner
 
     def distance(self):
+        """Return the length (km) for the track"""
+
         total_distance = 0
         for element in range(len(self.distances)):
             total_distance += self.distances[element]
@@ -109,17 +123,23 @@ class SingleTrack:
         return total_distance
 
     def time(self):
+        """Return the time (hours) for the track"""
         time = 0
+        speed_residential = 30
+        speed_local = 80
+        speed_motorway = 120
         for i in range(len(self.cc)):
             if self.road[i] == 'r':
-                time += self.distances[i]/30
+                time += self.distances[i]/speed_residential
             if self.road[i] == 'l':
-                time += self.distances[i]/80
+                time += self.distances[i]/speed_local
             if self.road[i] == 'm':
-                time += self.distances[i]/120
+                time += self.distances[i]/speed_motorway
         return time
 
     def co2(self):
+        """Return the emission of CO2 (kg) for the track"""
+
         co2 = 0
         for i in range(len(self.cc)):
             elevation_change = self.elevation[i+1]-self.elevation[i]
@@ -127,13 +147,10 @@ class SingleTrack:
         return co2
 
 
-          
-
-    
 
 
 class Tracks:
-
+    """A class to represent n tracks' information."""
     def __init__(self, start_poit, end_point, map_size, date_time, resolution, tracks):
         self.start = start_poit
         self.end = end_point
@@ -141,23 +158,25 @@ class Tracks:
         self.date = date_time
         self.resolution = resolution
         self.tracks = tracks
-
-    def __str__(self):
-
-        return "Tracks: "+"{{{}}}".format(str(len(self.tracks)))+' from '+str(self.start)+' to '+str(self.end)
-
-    def __len__(self):
-
-        return len(self.tracks)
-
-    
-    def greenest(self):
         self.single_track = []
-        co2 = []
         for i in range(len(self.tracks)):
             self.single_track.append(SingleTrack(self.start, self.end, self.resolution, 
                                     self.tracks[i]['cc'], self.tracks[i]['road'], 
                                     self.tracks[i]['terrain'], self.tracks[i]['elevation']))
+
+    def __str__(self):
+        """Return the print form of object"""
+        return "Tracks: "+"{{{}}}".format(str(len(self.tracks)))+' from '+str(self.start)+' to '+str(self.end)
+
+    def __len__(self):
+        """Return the number of tracks is in the object"""
+        return len(self.tracks)
+
+    
+    def greenest(self):
+        """Return the track of the least CO2 emission"""
+        co2 = []
+        for i in range(len(self.tracks)):
                                   
             co2.append(self.single_track[i].co2()) 
         
@@ -168,6 +187,7 @@ class Tracks:
 
 
     def fastest(self):
+        """Return the fastest track"""
         time = []
         for i in range(len(self.tracks)):
             time.append(self.single_track[i].time())
@@ -179,6 +199,7 @@ class Tracks:
 
 
     def shortest(self):
+        """Return the shortest track"""
         distance = []
         for i in range(len(self.tracks)):
             distance.append(self.single_track[i].distance())
@@ -190,7 +211,7 @@ class Tracks:
 
 
     def get_track(self, x):
-            
+        """Return the track x"""
         return self.single_track[x]
 
 
@@ -201,13 +222,24 @@ class Tracks:
 
 
 # Check
-tracks = query_tracks(start=(0, 0), end=(15, 15),
-n_tracks=10, save=False)
+#local_tracks = load_tracksfile(path)
+# tracks = query_tracks(start=(0, 0), end=(15, 15),
+# n_tracks=10)
 
-print(len(tracks))
-print(tracks.greenest())
-print(tracks.fastest())
-print(tracks.shortest())
-print(tracks)
-print(tracks.get_track(5).visualise())
-print(tracks.get_track(5).corners())
+# print(len(tracks))
+# print(tracks.greenest())
+# print(tracks.fastest())
+# print(tracks.shortest())
+# print(tracks)
+# print(tracks.get_track(5).visualise())
+# print(tracks.get_track(5).corners())
+# print(tracks.get_track(5).distance())
+
+# print(len(local_tracks))
+# print(local_tracks.greenest())
+# print(local_tracks.fastest())
+# print(local_tracks.shortest())
+# print(local_tracks)
+# print(local_tracks.get_track(1).visualise())
+# print(local_tracks.get_track(1).corners())
+# print(local_tracks.get_track(1).distance())

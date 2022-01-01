@@ -48,7 +48,7 @@ def co2_emission(road, terrain, elevation_change, distance):
         factor_terrain = 1.25
     if terrain == 'p':
         factor_terrain = 1
-    if elevation_change >= -10 and elevation_change < -6:
+    if elevation_change < -6:
         factor_slope = 0.16
     if elevation_change >= -6 and elevation_change < -2:
         factor_slope = 0.45
