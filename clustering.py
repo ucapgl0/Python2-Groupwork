@@ -3,7 +3,7 @@ import random
 
 # Checklist of proposed changes:
 
-# 1. import math, random, not as * [x]
+# 1. import math, random, not as * [x] e0c59b01f9daaa88ce26ebf139c15882ef1c87e5
 # 2. Comment explaining what the code does [ ]
 # 3. Rename some of the variables (e.g. ps) [ ]
 # 4. Allow k to be changed [ ]
