@@ -1,9 +1,9 @@
-from math import *
-from random import *
+import math
+import random
 
 # Checklist of proposed changes:
 
-# 1. import math, random, not as * [ ]
+# 1. import math, random, not as * [x]
 # 2. Comment explaining what the code does [ ]
 # 3. Rename some of the variables (e.g. ps) [ ]
 # 4. Allow k to be changed [ ]
