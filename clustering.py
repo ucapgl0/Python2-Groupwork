@@ -3,9 +3,11 @@ from random import *
 
 # Checklist of proposed changes:
 
-# import math, random, not as * [ ]
-# Comment explaining what the code does
-# Rename some of the variables (e.g. ps)
+# 1. import math, random, not as * [ ]
+# 2. Comment explaining what the code does [ ]
+# 3. Rename some of the variables (e.g. ps) [ ]
+# 4. Allow k to be changed [ ]
+# 
 
 k=3
 
