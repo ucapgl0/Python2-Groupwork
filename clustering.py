@@ -6,28 +6,30 @@ import random
 # 1. import math, random, not as * [x] e0c59b01f9daaa88ce26ebf139c15882ef1c87e5
 # 2. Comment explaining what the code does [ ]
 # 3. Rename some of the variables (e.g. ps) [ ]
-# 4. Allow k to be changed [ ]
+# 4. Use numpy where possible to speedup the code
 # 
 
-k=3
+k=3 #The number of clusters of nearby points 
 
 lines = open('samples.csv', 'r').readlines()
 ps=[]
 for line in lines: ps.append(tuple(map(float, line.strip().split(','))))
 
-m=[ps[randrange(len(ps))], ps[randrange(len(ps))], ps[randrange(len(ps))]]
+#Pick 3 points at random for the initial clusters
 
-alloc=[None]*len(ps)
+m=[ps[randrange(len(ps))], ps[randrange(len(ps))], ps[randrange(len(ps))]]    #m represents the clusters of points
+
+alloc=[None]*len(ps)  #alloc is?
 n=0
 while n<10:
-  for i in range(len(ps)):
+  for i in range(len(ps)):  #what is ps?
     p=ps[i]
     d=[None] * 3
     d[0]=sqrt((p[0]-m[0][0])**2 + (p[1]-m[0][1])**2 + (p[2]-m[0][2])**2)
     d[1]=sqrt((p[0]-m[1][0])**2 + (p[1]-m[1][1])**2 + (p[2]-m[1][2])**2)
     d[2]=sqrt((p[0]-m[2][0])**2 + (p[1]-m[2][1])**2 + (p[2]-m[2][2])**2)
     alloc[i]=d.index(min(d))
-  for i in range(3):
+  for i in range(3):  #loop through for each of the 3 clusters
     alloc_ps=[p for j, p in enumerate(ps) if alloc[j] == i]
     new_mean=(sum([a[0] for a in alloc_ps]) / len(alloc_ps), sum([a[1] for a in alloc_ps]) / len(alloc_ps), sum([a[2] for a in alloc_ps]) / len(alloc_ps))
     m[i]=new_mean
