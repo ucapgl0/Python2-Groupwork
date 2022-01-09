@@ -1,27 +1,111 @@
 import requests
+import mimetypes
+import os
+import json
 
 def validation_load(path):
-    if path.exist() == False:
-        raise ValueError('The path should be vaild')
+
+    # Check the path
+    if os.path.isfile(path) == False:
+        raise TypeError('The path should be vaild document')
+    path_type = mimetypes.guess_type(path)
+    if path_type[0] == None:
+        raise TypeError('The type of document should be json')
+    if path_type[0][-4:] != 'json':
+        raise TypeError('The type of document should be json')
+
+    json_data = json.load(open(path))
+    if isinstance(json_data, dict) == False:
+        raise TypeError('The type of json should be dictionary')
+    if 'metadata' not in json_data or 'tracks' not in json_data:
+        raise ValueError("The keys of json should include 'metadata' and 'tracks'")
+    if isinstance(json_data['metadata'], dict) == False:
+        raise TypeError('The type of metadata on json should be dictionary')
+    if 'start' not in json_data['metadata'] or 'end' not in json_data['metadata']\
+        or 'datetime' not in json_data['metadata'] or 'resolution' not in json_data['metadata']:
+        raise ValueError("'start' and 'end' and 'datetime' and 'resolution' should be the keys of json['metadata']")
+
+    # Check the elements of 'metadata'
+    start = json_data['metadata']['start']
+    end = json_data['metadata']['end']
+    resolution = json_data['metadata']['resolution']
+    track = json_data['tracks']
+    if isinstance(start and end, (tuple, list)) == False:
+        raise TypeError('The start and end coordinates in json should be tuple or list') 
+    if len(start) != 2 or len(end) != 2:
+        raise ValueError('The lenth of coordinate of start and end points in json should be 2')
+    if isinstance(start[0] and start[1] and end[0] and end[1], (int, float)) == False:
+        raise TypeError('The elements of start and end coordinates in json should be number')
+    if start[0] < 0  or start[1] < 0 or end[0] < 0 or end[1] < 0:
+        raise ValueError('The coordinates in json should be positive')
+    if start[0] > 299 or start[1] > 299 or end[0] > 299 or end[1] > 299:
+        raise ValueError('The elements of coordinates in json should be equal or smaller than 299')
+    if isinstance(resolution, (int, float)) == False:
+        raise TypeError('The distance between two points should be number')
+    if resolution <= 0 :
+        raise ValueError('The distance between two points should be positive number')
+
+    # Check the track properties
+    if isinstance(track, list) == False:
+        raise TypeError("The type of value of 'track' should be list")
+    for i in range(len(track)):
+        if isinstance(track[i], dict) == False:
+            raise TypeError("The type of elements of json['tracks'] should be dictionary")
+        if 'cc' not in track[i] or 'road' not in track[i] or 'terrain' not in track[i] or 'elevation' not in track[i]:
+            raise ValueError("The keys of track should include 'cc' and 'road' and 'terrain' and 'elevation'")
+        cc = track[i]['cc']
+        road = track[i]['road']
+        terrain = track[i]['terrain']
+        elevation = track[i]['elevation']
+        if isinstance(cc and road and terrain, str) == False:
+            raise TypeError('The type of chain code, road and terrain should be string')
+        if isinstance(elevation, list) == False:
+            raise TypeError('The type of elevation should be list')
+        if len(cc) != len(road) or len(cc) != len(terrain):
+            raise ValueError('The lenth of chain code, road and terrain should be equal to total steps')
+        if len(elevation) != len(cc) + 1:
+            raise ValueError('The lenth of elevation should be equal to the number of points which equals to total steps plus 1')
+
+        for j in range(len(cc)):
+            if cc[j].isdigit() == False:
+                raise TypeError('The chain code should be number')
+            if int(cc[j]) < 1 or int(cc[j]) > 4:
+                raise ValueError('The range of chain code should be integer 1 to 4')
+        for j in range(len(road)):
+            if road[j] != 'm' and road[j] != 'l' and road[j] != 'r':
+                raise ValueError("The type of road should be 'r', 'l' and 'm' which are residential, local and motorway")
+        for j in range(len(terrain)):
+            if terrain[j] != 'p' and terrain[j] != 'd' and terrain[j] != 'g':
+                raise ValueError("The type of terrain should be 'p', 'g' and 'd' which are paved, gravel or dirt")
+        for j in range(len(elevation)):
+            if isinstance(elevation[j], (int, float)) == False:
+                raise TypeError('The type of elements of elevation should be number')
 
 
-def validation_query(start, end, url):
+def validation_query(start, end, min_step, max_step, tracks, url):
 
-    if isinstance(start and end, tuple) == False:
-        raise TypeError('The start and end coordinates should be tuple') 
+    if isinstance(start and end, (tuple, list)) == False:
+        raise TypeError('The start and end coordinates should be tuple or list') 
+    if len(start) != 2 or len(end) != 2:
+        raise ValueError('The lenth of coordinate of start and end points should be 2')
     if isinstance(start[0] and start[1] and end[0] and end[1], (int, float)) == False:
         raise TypeError('The elements of start and end coordinates should be number')
     if start[0] < 0  or start[1] < 0 or end[0] < 0 or end[1] < 0:
         raise ValueError('The coordinates input should be positive')
     if start[0] > 299 or start[1] > 299 or end[0] > 299 or end[1] > 299:
         raise ValueError('The elements of coordinates input should be equal or smaller than 299')
+    if isinstance(min_step and max_step, int) == False:
+        raise TypeError('The number of minimum and maximum steps on a particular direction should be integer')
+    if isinstance(tracks, int) == False:
+        raise TypeError('The number of tracks should be integer')
     try:
-        requests.get(url, timeout=5)
+        requests.get(url, timeout=30)
     except:
         raise ConnectionError('The internet connection is not working')
 
-def request_data(url):
 
+def request_data(url):
+    """Return the data of website"""
     req = requests.get(url, timeout=30) 
 
     req_json = req.json()
@@ -29,6 +113,7 @@ def request_data(url):
     return req_json
 
 def track_coordinates(start, cc):
+    """Return the list of coordinate_x, coordinate_y and coordinates for a track"""
     x = []
     y = []
     coordinates = []
@@ -54,7 +139,7 @@ def track_coordinates(start, cc):
 
 
 def co2_emission(road, terrain, elevation_change, distance):
-    
+    """Return the CO2 emission for a track"""
     a_liter_co2 = 2.6391
     if road == 'r':
         factor_road = 1.40

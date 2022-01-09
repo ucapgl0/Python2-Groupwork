@@ -33,7 +33,8 @@ def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_s
     '&min_steps_straight='+str(min_steps_straight)+'&max_steps_straight='+str(max_steps_straight)+\
     '&n_tracks='+str(n_tracks)
 
-    utils.validation_query(start, end, url)
+    utils.validation_query(start, end, min_steps_straight, max_steps_straight, 
+                                   n_tracks, url)
 
     track_data = utils.request_data(url)
     time = track_data['metadata']['datetime']
@@ -105,11 +106,11 @@ class SingleTrack:
         """Return a list with coordinates of corners, including the start and end points."""
 
         corner = []
-        corner.append(self.start)
+        corner.append((self.start[0], self.start[1]))
         for i in range(len(self.cc)-1):
             if self.cc[i] != self.cc[i+1]:
                 corner.append(self.coordinate[i+1])
-        corner.append(self.end)
+        corner.append((self.end[0], self.end[1]))
         return corner
 
     def distance(self):
@@ -211,6 +212,8 @@ class Tracks:
 
     def get_track(self, x):
         """Return the track x"""
+        if x >= len(self.tracks):
+            raise ValueError('x should be smaller than the number of tracks')
         return self.single_track[x]
 
 
@@ -221,10 +224,10 @@ class Tracks:
 
 
 # Check
-#path = r"D:\1python\short_tracks.json"
-#local_tracks = load_tracksfile(path)
+# path = r"D:\1python\short_tracks.json"
+# local_tracks = load_tracksfile(path)
 # tracks = query_tracks(start=(0, 0), end=(15, 15),
-# n_tracks=10)
+# n_tracks=10, save=False)
 
 # print(len(tracks))
 # print(tracks.greenest())
@@ -235,11 +238,14 @@ class Tracks:
 # print(tracks.get_track(5).corners())
 # print(tracks.get_track(5).distance())
 
-# print(len(local_tracks))
-# print(local_tracks.greenest())
-# print(local_tracks.fastest())
-# print(local_tracks.shortest())
 # print(local_tracks)
+# print(len(local_tracks))
+# print(len(local_tracks.get_track(1)))
+# print(local_tracks.greenest().co2())
+# print(local_tracks.fastest().time())
+# print(local_tracks.shortest().distance())
 # print(local_tracks.get_track(1).visualise())
 # print(local_tracks.get_track(1).corners())
 # print(local_tracks.get_track(1).distance())
+# print(local_tracks.get_track(1).time())
+# print(local_tracks.get_track(1).co2())
