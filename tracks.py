@@ -226,19 +226,19 @@ class Tracks:
         return self.single_track[x]
 
 
-    def kmeans(self):
+    def kmeans(self,n,cluster_number):
         from clustering import cluster
         kmeans_coordinates=[]
         #create list of coordinates (in tuple form) for kmeans algorithm clustering
         for i in range(len(self.tracks)):
             kmeans_coordinates.append((self.single_track[i].time(),self.single_track[i].distance(),self.single_track[i].co2()))
         #print(len(kmeans_coordinates))
-        alloc,m=cluster(kmeans_coordinates)
+        alloc,m=cluster(kmeans_coordinates,n=10,k=cluster_number)
         # #Visual output
         # from matplotlib import pyplot as plt 
         # fig = plt.figure()
         # ax = fig.add_subplot(projection='3d')
-        # for i in range(3):
+        # for i in range(cluster_number):
         #     alloc_plist = [p for j, p in enumerate(kmeans_coordinates) if alloc[j]==i]
         #     ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
         # plt.show()
@@ -259,7 +259,7 @@ tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 # print(tracks.get_track(5).visualise())
 # print(tracks.get_track(5).corners())
 # print(tracks.get_track(5).distance())
-print(tracks.kmeans())
+print(tracks.kmeans(10,3))
 
 # print(local_tracks)
 # print(local_tracks.kmeans())
