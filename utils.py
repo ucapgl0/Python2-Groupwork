@@ -4,6 +4,17 @@ import os
 import json
 
 def validation_load(path):
+    """
+    Check if the input path is valid and ensure all data needed can be extracted. The path should direct 
+    to an existing JSON file, and the content in the file should follow the correct structure. The JSON 
+    file contains dictionary structured data with particular keys and values. In addition, attributes of 
+    tracks extracted should have correct structure as well. 
+    
+    Parameters
+    ----------
+    path: str
+        The path for a JSON file.
+    """
 
     # Check the path
     if os.path.isfile(path) == False:
@@ -83,6 +94,20 @@ def validation_load(path):
 
 
 def validation_query(start, end, min_step, max_step, tracks, url):
+    """
+    Check if the inputs for the function query_tracks() is valid. The coordinates of starting and 
+    end points should be tuples of integers. Those integers should be non-negative and cannot exceed 
+    the map size. The user must have internet connection to query from the webapp. 
+    
+    Parameters
+    ----------
+    start: tuple of ints
+        The starting coordinate of the track
+    end: tuple of ints
+        The starting coordinate of the track
+    url: str
+        The address of the road-tracks webapp.
+    """
 
     if isinstance(start and end, (tuple, list)) == False:
         raise TypeError('The start and end coordinates should be tuple or list') 
@@ -105,14 +130,59 @@ def validation_query(start, end, min_step, max_step, tracks, url):
 
 
 def request_data(url):
-    """Return the data of website"""
+    """
+    Request the resolution, time, and the track from the road-tracks webapp.
+    
+    Parameters
+    ----------
+    url: str
+        The address of the road-tracks webapp.
+
+    Returns
+    -------
+    JSON object
+        A JSON object obtained from the webapp containing data needed to construct a Track object
+    
+    Examples
+    --------
+    >>> from utils import request_data
+    >>> track_data = request_data('http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\)
+    """
+
     req = requests.get(url, timeout=30) 
     req_json = req.json()
     return req_json
 
 def track_coordinates(start, cc):
-    """Return the list of x coordinates, y coordinates and (x,y) coordinates for a track
-    given the chain code and the initial point."""
+    """
+    Get the coordinates of points in a track with its chaincode. The chaincode consists of values 
+    between 1-4, respectively indicating four directions to move at a certain point.
+    
+    Parameters
+    ----------
+    start: tuple of ints
+        The starting coordinate of the track
+    cc: str
+        The chaincode of a track indicating steps in it.
+
+    Returns
+    -------
+    list of integer
+        The list of x_coordinates of all points in the track
+    list of integer
+        The list of y_coordinates of all points in the track
+    list of tuples
+        The list of coordinates of all points in the track
+
+    Examples
+    --------
+    >>> from utils import track_coordinates
+    >>> track = query_tracks(start=(5, 6), end=(10, 10), n_tracks=6, save=False).single_track[0]
+    >>> coordinate_x, coordinate_y, coordinate = track_coordinates(track.start, track.cc)
+    >>> print(coordinate_x, coordinate_y, coordinate)
+    ([5, 6, 7, 8, 9, 10, 10, 10, 10, 10], [6, 6, 6, 6, 6, 6, 7, 8, 9, 10], [(5, 6), (6, 6), (7, 6), 
+    (8, 6), (9, 6), (10, 6), (10, 7), (10, 8), (10, 9), (10, 10)])
+    """
     x = []
     y = []
     coordinates = []
@@ -138,7 +208,34 @@ def track_coordinates(start, cc):
 
 
 def co2_emission(road, terrain, elevation_change, distance):
-    """Return the CO2 emission for a track"""
+    """
+    Calculate the amount of CO2 emission from one certain point to the next point in a track. The CO2 
+    emission between two points depends on the road type, the terrain, and the slope.
+    
+    Parameters
+    ----------
+    road: str
+        The abbreviation indicating the road type between the two points
+    terrain: str
+        The abbreviation indicating the terrain between the two points
+    elevation_change: int
+        The slope between the two points
+    distance: float
+        The distance between the two points.
+
+    Returns
+    -------
+    float
+        The amount of CO2 emission between the two points
+
+    Examples
+    --------
+    >>> from utils import co2_emission
+    >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10).single_track[0]
+    >>> co2 = co2_emission(track.road[2], track.terrain[2], -4, track.distances[2])
+    >>> print(co2)
+    0.10020337822665155
+    """
     a_liter_co2 = 2.6391
     if road == 'r':
         factor_road = 1.40
