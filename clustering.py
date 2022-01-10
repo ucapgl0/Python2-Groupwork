@@ -12,7 +12,7 @@ k=3 #The number of clusters of nearby points
 
 #Reading the file containing points in 3D space
 lines = open('samples.csv', 'r').readlines() #read file line by line
-plist=[] #point set: list containing each point coordinates (written as a tuple)
+plist=[] #point list: list containing each point coordinates (written as a tuple)
 for line in lines: #iterate through the line and add each point coordinates
   plist.append(tuple(map(float, line.strip().split(',')))) 
 
@@ -39,8 +39,8 @@ def cluster(plist,n=10):
         n=n+1 #repeat the above procedure 10 times
     return alloc,m
 
-alloc,m=cluster(plist)
-
+# alloc,m=cluster(plist)
+# print(alloc)
 
 ##### OUTPUTING THE ALGORITHM RESULTS 
 # # Text output
@@ -49,11 +49,11 @@ alloc,m=cluster(plist)
 #   print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
 #   print(alloc_plist)
 
-#Visual output
-from matplotlib import pyplot as plt 
-fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
-for i in range(3):
-  alloc_plist = [p for j, p in enumerate(plist) if alloc[j]==i]
-  ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
-plt.show()
+# #Visual output
+# from matplotlib import pyplot as plt 
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# for i in range(3):
+#   alloc_plist = [p for j, p in enumerate(plist) if alloc[j]==i]
+#   ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
+# plt.show()

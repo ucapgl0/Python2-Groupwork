@@ -107,13 +107,12 @@ def validation_query(start, end, min_step, max_step, tracks, url):
 def request_data(url):
     """Return the data of website"""
     req = requests.get(url, timeout=30) 
-
     req_json = req.json()
-
     return req_json
 
 def track_coordinates(start, cc):
-    """Return the list of coordinate_x, coordinate_y and coordinates for a track"""
+    """Return the list of x coordinates, y coordinates and (x,y) coordinates for a track
+    given the chain code and the initial point."""
     x = []
     y = []
     coordinates = []
