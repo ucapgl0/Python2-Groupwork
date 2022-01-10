@@ -86,8 +86,12 @@ class SingleTrack:
     def visualise(self, show = True, filename='my_track.png'):
         """Visualise/save a graph with a distance vs elevation plot."""
 
-        distance = [i for i in range(len(self.elevation))] 
-        #Shouldn't the distance though be a distance also dependent on resolution?
+        distance = []
+        total_distance = 0
+        for i in range(len(self.distances)+1):
+            distance.append(total_distance)
+            if i < len(self.distances):
+                total_distance += self.distances[i]
        
         plt.subplot(2,2,1)
         plt.xlabel('Distance')
