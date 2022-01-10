@@ -7,10 +7,9 @@ import random
 # 2. Comment explaining what the code does [x] c2841c373e0e919c6061e2ad943ec498e2c669c6
 # 3. Rename some of the variables (e.g. ps) [x] e5d2dbd79b0a5115d95aca0567e4da935a3dd891
 # 4. Use numpy where possible to speedup the code [ ]
-# 5. Define the cluster function [x]
-# 6. Improving readability by explicitly showing dependence on k. [x]
+# 5. Define the cluster function [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
+# 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
-k=3 #The number of clusters of nearby points 
 
 #Reading the file containing points in 3D space
 lines = open('samples.csv', 'r').readlines() #read file line by line
@@ -18,7 +17,7 @@ plist=[] #point list: list containing each point coordinates (written as a tuple
 for line in lines: #iterate through the line and add each point coordinates
   plist.append(tuple(map(float, line.strip().split(',')))) 
 
-def cluster(plist,n=10):
+def cluster(plist,n=10,k=3):
     #Pick k points at random for the initial cluster centres
     m=[plist[random.randrange(len(plist))] for it in range(0,k)]
     #m=[plist[random.randrange(len(plist))], plist[random.randrange(len(plist))], plist[random.randrange(len(plist))]]    
@@ -41,7 +40,8 @@ def cluster(plist,n=10):
         n=n+1 #repeat the above procedure 10 times
     return alloc,m
 
-alloc,m=cluster(plist)
+k=3 #The number of clusters of nearby points 
+alloc,m=cluster(plist,n=10,k=3)
 # print(alloc)
 
 ##### OUTPUTING THE ALGORITHM RESULTS 
