@@ -7,6 +7,8 @@ import random
 # 2. Comment explaining what the code does [x] c2841c373e0e919c6061e2ad943ec498e2c669c6
 # 3. Rename some of the variables (e.g. ps) [x] e5d2dbd79b0a5115d95aca0567e4da935a3dd891
 # 4. Use numpy where possible to speedup the code [ ]
+# 5. Define the cluster function [x]
+# 6. Improving readability by explicitly showing dependence on k. [x]
 
 k=3 #The number of clusters of nearby points 
 
@@ -17,20 +19,20 @@ for line in lines: #iterate through the line and add each point coordinates
   plist.append(tuple(map(float, line.strip().split(',')))) 
 
 def cluster(plist,n=10):
-    #Pick 3 points at random for the initial cluster centres
-    m=[plist[random.randrange(len(plist))], plist[random.randrange(len(plist))], plist[random.randrange(len(plist))]]    
+    #Pick k points at random for the initial cluster centres
+    m=[plist[random.randrange(len(plist))] for it in range(0,k)]
+    #m=[plist[random.randrange(len(plist))], plist[random.randrange(len(plist))], plist[random.randrange(len(plist))]]    
 
     alloc=[None]*len(plist)  #list which contains allocates point to one of the three clusters
     n=0
     while n<10: #iterate the k-means algorithm
         for i in range(len(plist)):  #iterate through the list of all points 
             p=plist[i] #index of the point in the point list
-            d=[None] * 3 #list of distances of a point to each of the cluster centres
-            d[0]=math.sqrt((p[0]-m[0][0])**2 + (p[1]-m[0][1])**2 + (p[2]-m[0][2])**2) #distance of the point to the 1st cluster
-            d[1]=math.sqrt((p[0]-m[1][0])**2 + (p[1]-m[1][1])**2 + (p[2]-m[1][2])**2) #distance of the point to the 2nd cluster
-            d[2]=math.sqrt((p[0]-m[2][0])**2 + (p[1]-m[2][1])**2 + (p[2]-m[2][2])**2) #distance of the point to the 3rd cluster
+            d=[None] * k #list of distances of a point to each of the cluster centres
+            for q in range(0,k):
+                d[q]=math.sqrt((p[0]-m[q][0])**2 + (p[1]-m[q][1])**2 + (p[2]-m[q][2])**2) #distance of the point to the q-th cluster
             alloc[i]=d.index(min(d)) #assign the point to the cluster which is the closest to it
-        for i in range(3):  #loop through for each of the 3 clusters
+        for i in range(k):  #loop through for each of the k clusters
             alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i] #make a list of all points within a given cluster
             #within each cluster find the (virtual) point by averaging over all cluster points
             new_mean=(sum([a[0] for a in alloc_plist]) / len(alloc_plist), sum([a[1] for a in alloc_plist]) / len(alloc_plist), sum([a[2] for a in alloc_plist]) / len(alloc_plist))
@@ -39,12 +41,12 @@ def cluster(plist,n=10):
         n=n+1 #repeat the above procedure 10 times
     return alloc,m
 
-# alloc,m=cluster(plist)
+alloc,m=cluster(plist)
 # print(alloc)
 
 ##### OUTPUTING THE ALGORITHM RESULTS 
 # # Text output
-# for i in range(3):
+# for i in range(k):
 #   alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i]
 #   print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
 #   print(alloc_plist)
@@ -53,7 +55,7 @@ def cluster(plist,n=10):
 # from matplotlib import pyplot as plt 
 # fig = plt.figure()
 # ax = fig.add_subplot(projection='3d')
-# for i in range(3):
+# for i in range(k):
 #   alloc_plist = [p for j, p in enumerate(plist) if alloc[j]==i]
 #   ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
 # plt.show()
