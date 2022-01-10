@@ -102,7 +102,6 @@ class SingleTrack:
         if show == True:
             plt.show()
         else:
-            #'track.png' stuff?
             if filename == 'my_track.png':
                 plt.savefig('my_track.png')
             else:
@@ -229,15 +228,16 @@ class Tracks:
         #create list of coordinates (in tuple form) for kmeans algorithm clustering
         for i in range(len(self.tracks)):
             kmeans_coordinates.append((self.single_track[i].time(),self.single_track[i].distance(),self.single_track[i].co2()))
+        #print(len(kmeans_coordinates))
         alloc,m=cluster(kmeans_coordinates)
-        #Visual output
-        from matplotlib import pyplot as plt 
-        fig = plt.figure()
-        ax = fig.add_subplot(projection='3d')
-        for i in range(3):
-            alloc_plist = [p for j, p in enumerate(kmeans_coordinates) if alloc[j]==i]
-            ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
-        plt.show()
+        # #Visual output
+        # from matplotlib import pyplot as plt 
+        # fig = plt.figure()
+        # ax = fig.add_subplot(projection='3d')
+        # for i in range(3):
+        #     alloc_plist = [p for j, p in enumerate(kmeans_coordinates) if alloc[j]==i]
+        #     ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
+        # plt.show()
         return alloc,m
 
 
@@ -245,7 +245,7 @@ class Tracks:
 # path = r"D:\1python\short_tracks.json"
 # path = r"short_tracks.json"
 # local_tracks = load_tracksfile(path)
-tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=50, save=False)
+tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 
 # print(len(tracks))
 # print(tracks.greenest())
