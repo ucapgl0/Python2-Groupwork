@@ -505,6 +505,19 @@ class Tracks:
 
 
     def kmeans(self,n,cluster_number):
+        """
+        Call the function to run k-means algorithm.
+
+        Parameters
+        ----------
+        cluster_number: int
+            The parameter indicating the number of cluster centers passed to the algorithm.
+
+        Returns
+        -------
+        list of tuples
+            The results returned by the algorithm
+        """
         from clustering import cluster
         kmeans_coordinates=[]
         #create list of coordinates (in tuple form) for kmeans algorithm clustering
