@@ -172,8 +172,6 @@ def track_coordinates(start, cc):
 
     Examples
     --------
-    # >>> from tracks import load_tracksfile
-    # >>> track = load_tracksfile('./short_tracks.json').single_track[0]
     >>> coordinate_x, coordinate_y, coordinate = track_coordinates((2, 3), '11233344111')
     >>> print(coordinate_x, coordinate_y, coordinate)
     [2, 3, 4, 4, 3, 2, 1, 1, 1, 2, 3, 4] [3, 3, 3, 4, 4, 4, 4, 3, 2, 2, 2, 2] [(2, 3), (3, 3), (4, 3), (4, 4), (3, 4), (2, 4), (1, 4), (1, 3), (1, 2), (2, 2), (3, 2), (4, 2)]
@@ -225,8 +223,6 @@ def co2_emission(road, terrain, elevation_change, distance):
 
     Examples
     --------
-    # >>> from tracks import load_tracksfile
-    # >>> track = load_tracksfile('./short_tracks.json').single_track[0]
     >>> co2 = co2_emission('m', 'g', -4, 1.000012499921876)
     >>> print(co2)
     0.10020458065877329

@@ -539,11 +539,14 @@ class Tracks:
 
 doctest.testmod()
 
+# # kmeans
+# tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
+# print(tracks.kmeans(10,3))
+
 # # Check
 # path = r"D:\1python\short_tracks.json"
 # path = r"short_tracks.json"
 # local_tracks = load_tracksfile(path)
-tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 
 # print(len(tracks))
 # print(tracks.greenest())
@@ -553,7 +556,6 @@ tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 # print(tracks.get_track(5).visualise())
 # print(tracks.get_track(5).corners())
 # print(tracks.get_track(5).distance())
-print(tracks.kmeans(10,3))
 
 # print(local_tracks)
 # print(local_tracks.kmeans())
