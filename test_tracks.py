@@ -18,7 +18,7 @@ def test_chaincode_conver_to_coordinates(start_point, chain_code, correct_coordi
     assert coordinate == correct_coordinates
 
 # Negative test for incorrect path
-path_1 = r"D:\1python\samples.csv"
+path_1 = "./samples.csv"
 def test_imporper_path_input():
     with raises(TypeError) as exception:
         tracks.load_tracksfile(path_1)
@@ -35,7 +35,7 @@ def test_negative_coordinate_input():
 
 
 # Test the tracks object 
-path_2 = r"D:\1python\short_tracks.json"
+path_2 = "./short_tracks.json"
 local_tracks = tracks.load_tracksfile(path_2)
 
 def test_tracks_len():
