@@ -2,6 +2,7 @@ import requests
 import mimetypes
 import os
 import json
+import doctest
 
 def validation_load(path):
     """
@@ -142,11 +143,6 @@ def request_data(url):
     -------
     JSON object
         A JSON object obtained from the webapp containing data needed to construct a Track object
-    
-    Examples
-    --------
-    >>> from utils import request_data
-    >>> track_data = request_data('http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\)
     """
 
     req = requests.get(url, timeout=30) 
@@ -176,12 +172,11 @@ def track_coordinates(start, cc):
 
     Examples
     --------
-    >>> from utils import track_coordinates
-    >>> track = query_tracks(start=(5, 6), end=(10, 10), n_tracks=6, save=False).single_track[0]
-    >>> coordinate_x, coordinate_y, coordinate = track_coordinates(track.start, track.cc)
+    # >>> from tracks import load_tracksfile
+    # >>> track = load_tracksfile('./short_tracks.json').single_track[0]
+    >>> coordinate_x, coordinate_y, coordinate = track_coordinates((2, 3), '11233344111')
     >>> print(coordinate_x, coordinate_y, coordinate)
-    ([5, 6, 7, 8, 9, 10, 10, 10, 10, 10], [6, 6, 6, 6, 6, 6, 7, 8, 9, 10], [(5, 6), (6, 6), (7, 6), 
-    (8, 6), (9, 6), (10, 6), (10, 7), (10, 8), (10, 9), (10, 10)])
+    [2, 3, 4, 4, 3, 2, 1, 1, 1, 2, 3, 4] [3, 3, 3, 4, 4, 4, 4, 3, 2, 2, 2, 2] [(2, 3), (3, 3), (4, 3), (4, 4), (3, 4), (2, 4), (1, 4), (1, 3), (1, 2), (2, 2), (3, 2), (4, 2)]
     """
     x = []
     y = []
@@ -230,11 +225,11 @@ def co2_emission(road, terrain, elevation_change, distance):
 
     Examples
     --------
-    >>> from utils import co2_emission
-    >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10).single_track[0]
-    >>> co2 = co2_emission(track.road[2], track.terrain[2], -4, track.distances[2])
+    # >>> from tracks import load_tracksfile
+    # >>> track = load_tracksfile('./short_tracks.json').single_track[0]
+    >>> co2 = co2_emission('m', 'g', -4, 1.000012499921876)
     >>> print(co2)
-    0.10020337822665155
+    0.10020458065877329
     """
     a_liter_co2 = 2.6391
     if road == 'r':
@@ -264,3 +259,5 @@ def co2_emission(road, terrain, elevation_change, distance):
 
     co2 = 0.054 * factor_road * factor_terrain * factor_slope * distance * a_liter_co2
     return co2
+
+doctest.testmod()

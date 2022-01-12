@@ -42,7 +42,7 @@ def test_tracks_len():
     assert len(local_tracks) == 5
 
 def test_tracks_print_form():
-    assert str(local_tracks) == '<Tracks: {5} from [2, 3] to [4, 2]>'
+    assert str(local_tracks) == '<Tracks: {5} from (2, 3) to (4, 2)>'
 
 def test_tracks_greenest():
     assert local_tracks.greenest().co2() == 0.8247902275161714
@@ -62,7 +62,7 @@ def test_imporper_x_for_get_track():
 track_1 = local_tracks.get_track(1)
 
 def test_single_track_print_form():
-    assert str(track_1) == '<SingleTracks: start at [2, 3] - {9} steps>'
+    assert str(track_1) == '<SingleTracks: start at (2, 3) - {9} steps>'
 
 def test_single_track_len():
     assert len(track_1) == 10

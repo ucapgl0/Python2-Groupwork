@@ -3,7 +3,7 @@ import utils
 import matplotlib.pyplot as plt
 import heapq
 import math
-
+import doctest
 
 
 map_size = [300, 300]
@@ -24,11 +24,6 @@ def load_tracksfile(path):
     -------
     tracks_object: Tracks
         A Tracks object containing data in the file
-
-    Examples
-    --------
-    >>> from tracks import load_tracksfile
-    >>> tracks = load_tracksfile('../short_tracks.json')
     """
     utils.validation_load(path)
 
@@ -67,14 +62,6 @@ def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_s
     -------
     tracks_object: Tracks
         A Tracks object containing tracks that are found matching the inputs
-
-    Examples
-    --------
-    >>> from tracks import query_tracks
-    >>> query_tracks()
-    >>> query_tracks(start=(12,15), end=(25,46), save=False)
-    >>> query_tracks(start=(12,15), end=(25,46), min_steps_straight=1, max_steps_straight=40)
-    >>> query_tracks(start=(12,15), end=(25,46), n_tracks=30, save=False)
     """
     
     url = 'http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\
@@ -165,6 +152,13 @@ class SingleTrack:
         -------
         string
             The the print form of a single track
+
+        Examples
+        --------
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
+        >>> print(str(track))
+        <SingleTracks: start at (2, 3) - {11} steps>
         """
         return "<SingleTracks: start at "+str(self.start)+" - "+"{{{}}}".format(str(len(self.cc)))+' steps>'
 
@@ -176,6 +170,13 @@ class SingleTrack:
         -------
         int
             The number of coordinates in a single track, including the starting and end points
+        
+        Examples
+        --------
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
+        >>> print(len(track))
+        12
         """
         return len(self.elevation)
 
@@ -191,13 +192,6 @@ class SingleTrack:
             True for showing the result on the screen, False for saving it on disk as track.png
         filename: str, optional
             The filename using to save the result on disk.
-
-        Examples
-        --------
-        >>> from tracks.SingleTrack import visualise
-        >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False).single_track[0]
-        >>> track.visualise()
-        >>> track.visualise(False, 'distance_elevatioin_plot.png')
         """
         distance = []
         total_distance = 0
@@ -240,18 +234,18 @@ class SingleTrack:
 
         Examples
         --------
-        >>> from tracks.SingleTrack import corners
-        >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False).single_track[0]
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
         >>> corners = track.corners()
         >>> print(corners)
-        [(0, 0), (0, 3), (15, 3), (15, 15)]
+        [(2, 3), (4, 3), (4, 4), (1, 4), (1, 2), (4, 2)]
         """
         corner = []
-        corner.append((self.start[0], self.start[1]))
+        corner.append(self.start)
         for i in range(len(self.cc)-1):
             if self.cc[i] != self.cc[i+1]:
                 corner.append(self.coordinate[i+1])
-        corner.append((self.end[0], self.end[1]))
+        corner.append(self.end)
         return corner
 
     def distance(self):
@@ -265,11 +259,11 @@ class SingleTrack:
 
         Examples
         --------
-        >>> from tracks.SingleTrack import distance
-        >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False).single_track[0]
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
         >>> dis = track.distance()
         >>> print(dis)
-        30.000011999992495
+        11.000041499764627
         """
         total_distance = 0
         for element in range(len(self.distances)):
@@ -289,11 +283,11 @@ class SingleTrack:
 
         Examples
         --------
-        >>> from tracks.SingleTrack import time
-        >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False).single_track[0]
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
         >>> time = track.time()
         >>> print(time)
-        0.2500001416665687
+        0.2041674187457495
         """
         time = 0
         speed_residential = 30
@@ -320,11 +314,11 @@ class SingleTrack:
 
         Examples
         --------
-        >>> from tracks.SingleTrack import co2
-        >>> track = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False).single_track[0]
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> track = tracks.single_track[0]
         >>> e_co2 = track.co2()
         >>> print(e_co2)
-        6.680226105804127
+        2.4449705197624416
         """
 
         co2 = 0
@@ -338,7 +332,7 @@ class SingleTrack:
 
 class Tracks:
     """A class to represent n tracks' information."""
-    def __init__(self, start_poit, end_point, map_size, date_time, resolution, tracks):
+    def __init__(self, start_point, end_point, map_size, date_time, resolution, tracks):
         """
         Set up the initial parameters for tracks.
         
@@ -361,8 +355,8 @@ class Tracks:
             The list of every single track in the tracks, the length is N for Tracks with N single 
             tracks in it.
         """
-        self.start = start_poit
-        self.end = end_point
+        self.start = (start_point[0], start_point[1])
+        self.end = (end_point[0], end_point[1])
         self.map_size = map_size
         self.date = date_time
         self.resolution = resolution
@@ -381,6 +375,12 @@ class Tracks:
         -------
         string
             The print form of a Tracks object
+        
+        Examples
+        --------
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> print(str(tracks))
+        <Tracks: {5} from (2, 3) to (4, 2)>
         """
         return "<Tracks: "+"{{{}}}".format(str(len(self.tracks)))+' from '+str(self.start)+' to '+str(self.end)+">"
 
@@ -392,6 +392,12 @@ class Tracks:
         -------
         int
             The the number of tracks in a Tracks object
+        
+        Examples
+        --------
+        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> print(len(tracks))
+        5
         """
         return len(self.tracks)
 
@@ -407,11 +413,10 @@ class Tracks:
 
         Examples
         --------
-        >>> from tracks.Tracks import greenest
-        >>> tracks = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False)
+        >>> tracks = load_tracksfile('./short_tracks.json')
         >>> greenest_track = tracks.greenest()
         >>> print(greenest_track)
-        <SingleTracks: start at (0, 0) - {30} steps>
+        <SingleTracks: start at (2, 3) - {5} steps>
         """
         co2 = []
         for i in range(len(self.tracks)):        
@@ -434,11 +439,10 @@ class Tracks:
 
         Examples
         --------
-        >>> from tracks.Tracks import fastest
-        >>> tracks = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False)
+        >>> tracks = load_tracksfile('./short_tracks.json')
         >>> fastest_track = tracks.fastest()
         >>> print(fastest_track)
-        <SingleTracks: start at (0, 0) - {30} steps>
+        <SingleTracks: start at (2, 3) - {5} steps>
         """
         time = []
         for i in range(len(self.tracks)):
@@ -461,11 +465,10 @@ class Tracks:
 
         Examples
         --------
-        >>> from tracks.Tracks import shortest
-        >>> tracks = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False)
+        >>> tracks = load_tracksfile('./short_tracks.json')
         >>> shortest_track = tracks.shortest()
         >>> print(shortest_track)
-        <SingleTracks: start at (0, 0) - {30} steps>
+        <SingleTracks: start at (2, 3) - {5} steps>
         """
         distance = []
         for i in range(len(self.tracks)):
@@ -493,11 +496,10 @@ class Tracks:
 
         Examples
         --------
-        >>> from tracks.Tracks import get_track
-        >>> tracks = query_tracks(start=(0, 0), end=(15, 15), n_tracks=10, save=False)
+        >>> tracks = load_tracksfile('./short_tracks.json')
         >>> target_track = tracks.get_track(3)
         >>> print(target_track)
-        <SingleTracks: start at (0, 0) - {30} steps>
+        <SingleTracks: start at (2, 3) - {5} steps>
         """
         if x >= len(self.tracks):
             raise ValueError('x should be smaller than the number of tracks')
@@ -535,6 +537,7 @@ class Tracks:
         # plt.show()
         return alloc,m
 
+doctest.testmod()
 
 # # Check
 # path = r"D:\1python\short_tracks.json"
