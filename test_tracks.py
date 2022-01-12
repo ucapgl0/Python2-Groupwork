@@ -1,5 +1,3 @@
-import json
-from _pytest.config import exceptions
 import pytest
 import tracks
 import utils
