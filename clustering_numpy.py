@@ -34,11 +34,10 @@ def cluster(parray,n=10):
             alloc[i]=d.index(min(d)) #assign the point to the cluster which is the closest to it
 
         for i in range(k):  #loop through for each of the k clusters
-            alloc_parray=[p for j, p in np.ndenumerate(parray) if alloc[j] == i] # TODO change this from enumerate make a list of all points within a given cluster
+            alloc_parray=[p for j, p in np.ndenumerate(parray) if alloc[j] == i] # TODo change this from enumerate make a list of all points within a given cluster
             #within each cluster find the (virtual) point by averaging over all cluster points
             new_mean=(sum([a[0] for a in alloc_parray]) / len(alloc_parray), sum([a[1] for a in alloc_parray]) / len(alloc_parray), sum([a[2] for a in alloc_parray]) / len(alloc_parray))
             #use such (virtual) point to be a new cluster centre
-            #TODO ^ make this work with the array
             m[i]=new_mean
         n=n+1 #repeat the above procedure 10 times
     return alloc,m
