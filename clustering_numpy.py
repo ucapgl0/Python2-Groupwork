@@ -14,9 +14,9 @@ k=3 #The number of clusters of nearby points
 
 #Reading the file containing points in 3D space
 lines = open('samples.csv', 'r').readlines() #read file line by line
-parray=np.zeros(len(lines)) # TODO change this to a numpy array point list: list containing each point coordinates (written as a tuple)
+parray=np.zeros(len(lines)) # TODo change this to a numpy array point list: list containing each point coordinates (written as a tuple)
 for line in lines: #iterate through the line and add each point coordinates
-  parray[line] = (tuple(map(float, line.strip().split(',')))) #TODO Change this to an array indexing 
+  parray[line] = (tuple(map(float, line.strip().split(',')))) #TODo Change this to an array indexing 
 
 def cluster(parray,n=10):
     #Pick k points at random for the initial cluster centres
@@ -32,8 +32,9 @@ def cluster(parray,n=10):
             for q in range(0,k):
                 d[q]=np.sqrt((p[0]-m[q][0])**2 + (p[1]-m[q][1])**2 + (p[2]-m[q][2])**2) #distance of the point to the q-th cluster
             alloc[i]=d.index(min(d)) #assign the point to the cluster which is the closest to it
+
         for i in range(k):  #loop through for each of the k clusters
-            alloc_parray=[p for j, p in enumerate(parray) if alloc[j] == i] # TODO change this from enumerate make a list of all points within a given cluster
+            alloc_parray=[p for j, p in np.ndenumerate(parray) if alloc[j] == i] # TODO change this from enumerate make a list of all points within a given cluster
             #within each cluster find the (virtual) point by averaging over all cluster points
             new_mean=(sum([a[0] for a in alloc_parray]) / len(alloc_parray), sum([a[1] for a in alloc_parray]) / len(alloc_parray), sum([a[2] for a in alloc_parray]) / len(alloc_parray))
             #use such (virtual) point to be a new cluster centre
