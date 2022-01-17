@@ -501,6 +501,10 @@ class Tracks:
         >>> print(target_track)
         <SingleTracks: start at (2, 3) - {5} steps>
         """
+        if isinstance(x, int) == False:
+            raise TypeError('x should be an integer')
+        if x < 0:
+            raise ValueError('x should not be negative')
         if x >= len(self.tracks):
             raise ValueError('x should be smaller than the number of tracks')
         return self.single_track[x]
