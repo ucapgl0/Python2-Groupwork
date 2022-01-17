@@ -20,7 +20,7 @@ for line in lines: #iterate through the line and add each point coordinates
 
 def cluster(parray,n=10):
     #Pick k points at random for the initial cluster centres
-    m=[parray[random.randrange(len(parray))] for it in range(0,k)] #TODO change this from list comprehension to array indexing 
+    m=[parray[random.randrange(parray.shape[0])] for it in range(0,k)] #TODO change this from list comprehension to array indexing 
     #m=[parray[random.randrange(len(parray))], parray[random.randrange(len(parray))], parray[random.randrange(len(parray))]]    
 
     alloc=[None]*parray.shape[0]  # TODo change this to parray.shape[0] list which contains allocates point to one of the three clusters
@@ -45,18 +45,18 @@ def cluster(parray,n=10):
 alloc,m=cluster(parray) #TODO change these indexes
 # print(alloc)
 
-##### OUTPUTING THE ALGORITHM RESULTS 
+#### OUTPUTING THE ALGORITHM RESULTS 
 # # Text output
 # for i in range(k):
 #   alloc_parray=[p for j, p in enumerate(parray) if alloc[j] == i]
 #   print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_parray)) + " points.")
 #   print(alloc_parray)
 
-# #Visual output
-# from matplotlib import pyplot as plt 
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d')
-# for i in range(k):
-#   alloc_parray = [p for j, p in enumerate(parray) if alloc[j]==i]
-#   ax.scatter([a[0] for a in alloc_parray],[a[1] for a in alloc_parray],[a[2] for a in alloc_parray])
-# plt.show()
+#Visual output
+from matplotlib import pyplot as plt 
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+for i in range(k):
+  alloc_parray = [p for j, p in np.ndenumerate(parray) if alloc[j]==i]
+  ax.scatter([a[0] for a in alloc_parray],[a[1] for a in alloc_parray],[a[2] for a in alloc_parray])
+plt.show()

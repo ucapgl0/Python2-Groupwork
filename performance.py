@@ -10,10 +10,10 @@ N_points = np.logspace(100,10000,5) #Define an array of the number of points
 
 # Generate the input files with the nmber of points
 
-# Run with clustering.py 
+# Run with clustering.py & benchmark 
 
 
-# Run with clustering_numpy.py 
+# Run with clustering_numpy.py & benchmark 
 
 
 # Plot both times as a single plot
