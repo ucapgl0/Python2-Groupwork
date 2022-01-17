@@ -30,4 +30,6 @@ jobs:
     - name: Running pytest
       run: |
         pytest test_tracks.py
+        python tracks.py
+        python utils.py
         
