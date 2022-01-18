@@ -34,14 +34,17 @@ def cluster(plist,n=10,k=3):
         for i in range(k):  #loop through for each of the k clusters
             alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i] #make a list of all points within a given cluster
             #within each cluster find the (virtual) point by averaging over all cluster points
-            new_mean=(sum([a[0] for a in alloc_plist]) / len(alloc_plist), sum([a[1] for a in alloc_plist]) / len(alloc_plist), sum([a[2] for a in alloc_plist]) / len(alloc_plist))
+            if len(alloc_plist)!=0:
+                new_mean=(sum([a[0] for a in alloc_plist]) / len(alloc_plist), sum([a[1] for a in alloc_plist]) / len(alloc_plist), sum([a[2] for a in alloc_plist]) / len(alloc_plist))
+            else: #if no point was assigned to a cluster, set cluster centre position to [0,0,0]
+                new_mean=[0,0,0]
             #use such (virtual) point to be a new cluster centre
             m[i]=new_mean
         N=N+1 #repeat the above procedure 10 times
     return alloc,m
 
 k=3 #The number of clusters of nearby points 
-alloc,m=cluster(plist,n=10,k=3)
+alloc,m=cluster(plist,n=10,k=k)
 # print(alloc)
 
 ##### OUTPUTING THE ALGORITHM RESULTS 
