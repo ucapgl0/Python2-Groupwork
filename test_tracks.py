@@ -1,6 +1,6 @@
 import pytest
-import tracks
-import utils
+import tracknaliser.tracks as tracks
+import tracknaliser.utils as utils
 from pytest import raises
 
 

@@ -5,5 +5,5 @@ setup(
     version = "0.1.0",
     packages = find_packages(exclude=['*.test']),
     install_requires = ['pytest','requests','matplotlib','numpy','numpydoc'],
-    entry_points = {'console_scripts':['greentrack = command:process']}
+    entry_points = {'console_scripts':['greentrack = tracknaliser.command:process']}
 )
