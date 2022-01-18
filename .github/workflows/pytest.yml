@@ -31,8 +31,8 @@ jobs:
       run: |
         pytest test_tracks.py
 
-    - name: Running doctest
-      run: |
-        python tracks.py
-        python utils.py
+    # - name: Running doctest
+    #   run: |
+    #     python tracks.py
+    #     python utils.py
         
