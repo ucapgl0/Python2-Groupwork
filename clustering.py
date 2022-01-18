@@ -23,8 +23,8 @@ def cluster(plist,n=10,k=3):
     #m=[plist[random.randrange(len(plist))], plist[random.randrange(len(plist))], plist[random.randrange(len(plist))]]    
 
     alloc=[None]*len(plist)  #list which contains allocates point to one of the three clusters
-    n=0
-    while n<10: #iterate the k-means algorithm
+    N=0
+    while N<n: #iterate the k-means algorithm
         for i in range(len(plist)):  #iterate through the list of all points 
             p=plist[i] #index of the point in the point list
             d=[None] * k #list of distances of a point to each of the cluster centres
@@ -37,7 +37,7 @@ def cluster(plist,n=10,k=3):
             new_mean=(sum([a[0] for a in alloc_plist]) / len(alloc_plist), sum([a[1] for a in alloc_plist]) / len(alloc_plist), sum([a[2] for a in alloc_plist]) / len(alloc_plist))
             #use such (virtual) point to be a new cluster centre
             m[i]=new_mean
-        n=n+1 #repeat the above procedure 10 times
+        N=N+1 #repeat the above procedure 10 times
     return alloc,m
 
 k=3 #The number of clusters of nearby points 
