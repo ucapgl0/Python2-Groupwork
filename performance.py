@@ -42,6 +42,15 @@ for N in N_points:      #Loop through all the number of points in the range
         times[i,1] = end_numpy - start_numpy
 # Plot both times as a single plot
 
-
+plt.plot(N_points, times[0], label = "Native python method")
+plt.plot(N_points, times[1], label = "Numpy method")
+plt.title("Time taken for various input path lengths")
+plt.ylabel("Time [s]")
+plt.xlabel("N")
+plt.legend()
+plt.yscale('log')
+plt.xscale('log')
 
 # Save the plot 
+
+plt.savefig('performamce.png')
