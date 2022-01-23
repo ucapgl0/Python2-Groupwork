@@ -559,31 +559,3 @@ class Tracks:
 # # kmeans
 # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 # print(tracks.kmeans(10,3))
-
-
-
-
-# # Check
-# path = r"D:\1python\short_tracks.json"
-# path = r"short_tracks.json"
-# local_tracks = load_tracksfile(path)
-
-# print(len(tracks))
-# print(tracks.greenest())
-# print(tracks.fastest())
-# print(tracks.shortest())
-# print(tracks)
-# print(tracks.get_track(5).visualise())
-# print(tracks.get_track(5).corners())
-# print(tracks.get_track(5).distance())
-
-# print(local_tracks)
-# print(local_tracks.kmeans())
-# print(len(local_tracks))
-# print(len(local_tracks.get_track(1)))
-# print(local_tracks.greenest().co2())
-# print(local_tracks.fastest().time())
-# print(local_tracks.shortest().distance())
-# print(local_tracks.get_track(1).visualise())
-# for i in range(0,len(local_tracks)):
-#     print(local_tracks.get_track(i).corners(),local_tracks.get_track(i).distance(),local_tracks.get_track(i).time(),local_tracks.get_track(i).co2())
