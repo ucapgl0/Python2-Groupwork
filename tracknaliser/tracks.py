@@ -3,7 +3,6 @@ import tracknaliser.utils as utils
 import matplotlib.pyplot as plt
 import heapq
 import math
-import doctest
 
 
 map_size = [300, 300]
@@ -542,7 +541,20 @@ class Tracks:
         return alloc,m
 
 # # doctest
-# doctest.testmod()
+# if __name__=='__main__':
+#     import doctest
+#     doctest.testmod()
+
+# # mocking
+# def test_the_internet():
+#     with patch.object(utils.requests,'get') as mock_get:
+#         default_tracks = query_tracks((1,2),(10,15),save=False)
+#         mock_get.assert_called_with(
+#             'http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\
+#             'start_point_x=1&start_point_y=2&end_point_x=10&end_point_y=15'\
+#             '&min_steps_straight=1&max_steps_straight=6&n_tracks=300', timeout=30
+#         )
+# test_the_internet()
 
 # # kmeans
 # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
