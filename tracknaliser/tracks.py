@@ -3,7 +3,6 @@ import tracknaliser.utils as utils
 import matplotlib.pyplot as plt
 import heapq
 import math
-import doctest
 
 
 map_size = [300, 300]
@@ -542,36 +541,21 @@ class Tracks:
         return alloc,m
 
 # # doctest
-# doctest.testmod()
+# if __name__=='__main__':
+#     import doctest
+#     doctest.testmod()
+
+# # mocking
+# def test_the_internet():
+#     with patch.object(utils.requests,'get') as mock_get:
+#         default_tracks = query_tracks((1,2),(10,15),save=False)
+#         mock_get.assert_called_with(
+#             'http://ucl-rse-with-python.herokuapp.com/road-tracks/tracks/?'\
+#             'start_point_x=1&start_point_y=2&end_point_x=10&end_point_y=15'\
+#             '&min_steps_straight=1&max_steps_straight=6&n_tracks=300', timeout=30
+#         )
+# test_the_internet()
 
 # # kmeans
 # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
 # print(tracks.kmeans(10,3))
-
-
-
-
-# # Check
-# path = r"D:\1python\short_tracks.json"
-# path = r"short_tracks.json"
-# local_tracks = load_tracksfile(path)
-
-# print(len(tracks))
-# print(tracks.greenest())
-# print(tracks.fastest())
-# print(tracks.shortest())
-# print(tracks)
-# print(tracks.get_track(5).visualise())
-# print(tracks.get_track(5).corners())
-# print(tracks.get_track(5).distance())
-
-# print(local_tracks)
-# print(local_tracks.kmeans())
-# print(len(local_tracks))
-# print(len(local_tracks.get_track(1)))
-# print(local_tracks.greenest().co2())
-# print(local_tracks.fastest().time())
-# print(local_tracks.shortest().distance())
-# print(local_tracks.get_track(1).visualise())
-# for i in range(0,len(local_tracks)):
-#     print(local_tracks.get_track(i).corners(),local_tracks.get_track(i).distance(),local_tracks.get_track(i).time(),local_tracks.get_track(i).co2())
