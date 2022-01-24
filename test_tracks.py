@@ -1,7 +1,6 @@
 import pytest
 import tracknaliser.tracks as tracks
 import tracknaliser.utils as utils
-from pytest import raises
 
 
 
@@ -18,16 +17,16 @@ def test_chaincode_conver_to_coordinates(start_point, chain_code, correct_coordi
 # Negative test for incorrect path
 path_1 = "./samples.csv"
 def test_imporper_path_input():
-    with raises(TypeError) as exception:
+    with pytest.raises(TypeError) as exception:
         tracks.load_tracksfile(path_1)
 
 # Negative test for query
 def test_imporper_type_coordinate_input():
-    with raises(TypeError) as exception:
+    with pytest.raises(TypeError) as exception:
         tracks.query_tracks(start=('a', 30)) 
 
 def test_negative_coordinate_input():
-    with raises(ValueError) as exception:
+    with pytest.raises(ValueError) as exception:
         tracks.query_tracks(start=(-1, 20))
 
 
@@ -53,7 +52,7 @@ def test_tracks_shortest():
 
 # Negative test for get_track method
 def test_imporper_x_for_get_track():
-    with raises(ValueError) as exception:
+    with pytest.raises(ValueError) as exception:
         local_tracks.get_track(100)
 
 # Test the single_track object
@@ -76,5 +75,12 @@ def test_single_track_time():
 
 def test_single_track_co2():
     assert track_1.co2() == 2.1996771881096326
+
+# test mocking services that requires the internet connection
+def test_the_internet():
+    from unittest import mock
+    connection_failed = mock.Mock(return_value=False)
+    with pytest.raises(ConnectionError) as e:
+        utils.validation_query((0, 0), (299, 299), 1, 6, 300, connection_failed)
 
 pytest.main(["test_tracks.py"])
