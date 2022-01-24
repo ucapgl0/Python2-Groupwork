@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import argparse
 
 # Checklist of proposed changes:
 
@@ -10,14 +11,10 @@ import numpy as np
 # 5. Define the cluster function [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 # 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
-
-#Reading the file containing points in 3D space
-lines = open('samples.csv', 'r').readlines() #read file line by line
-plist=[] #point list: list containing each point coordinates (written as a tuple)
-for line in lines: #iterate through the line and add each point coordinates
-  plist.append(list(map(float, line.strip().split(',')))) 
-
-parray=np.array(plist) #create a numpy array from the data
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument("file", type=str, help='Specify the input file')
+parser.add_argument('--iters', nargs=1, type=int, default=20, help='Specify the number of iterations')
+args = parser.parse_args()
 
 def cluster(plist,n=10,k=3):
     m=np.random.randint(0,np.shape(parray)[0],size=k)
@@ -26,22 +23,31 @@ def cluster(plist,n=10,k=3):
         m=np.array([np.mean(parray[alloc==j],axis=0) if np.all(np.isnan(np.mean(parray[alloc==j],axis=0)))==False else np.array([0,0,0]) for j in range(0,k)])
     return alloc,m
 
-k=3 #The number of clusters of nearby points 
-alloc,m=cluster(plist,10,k)
-# print(alloc)
+if __name__ == "__main__":
+    #Reading the file containing points in 3D space
+    try:
+        lines = open(args.file, 'r').readlines() #read file line by line
+    except Exception as ee:
+        parser.error(ee)
+    plist=[] #point list: list containing each point coordinates (written as a tuple)
+    for line in lines: #iterate through the line and add each point coordinates
+        plist.append(tuple(map(float, line.strip().split(','))))
+    parray=np.array(plist) #create a numpy array from the data
 
-##### OUTPUTING THE ALGORITHM RESULTS 
-# # Text output
-# for i in range(k):
-#   alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i]
-#   print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
-#   print(alloc_plist)
+    k=3 #The number of clusters of nearby points 
+    alloc,m=cluster(plist,args.iters[0],k=k)
 
-# #Visual output
-# from matplotlib import pyplot as plt 
-# fig = plt.figure()
-# ax = fig.add_subplot(projection='3d')
-# for i in range(k):
-#   alloc_plist = [p for j, p in enumerate(plist) if alloc[j]==i]
-#   ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
-# plt.show()
+    #### OUTPUTING THE ALGORITHM RESULTS 
+    # Text output
+    for i in range(k):
+      alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i]
+      print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
+
+      # #Visual output
+      # from matplotlib import pyplot as plt 
+      # fig = plt.figure()
+      # ax = fig.add_subplot(projection='3d')
+      # for i in range(k):
+      #   alloc_plist = [p for j, p in enumerate(plist) if alloc[j]==i]
+      #   ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
+      # plt.show()
