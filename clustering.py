@@ -12,12 +12,24 @@ import argparse
 # 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument("file", type=str, help='Specify the input file')
-parser.add_argument('--iters', nargs=1, type=int, default=20, help='Specify the number of iterations')
-args = parser.parse_args()
-
 def cluster(plist,n=10,k=3):
+    """
+    Group the data points into k clusters.
+
+    Parameters
+    ----------
+    plist: list of int tuples
+        The coordinates of the data points
+    n: int
+        The number of iterations
+    k: int
+        The number of cluster centers.
+
+    Returns
+    -------
+    lists of int tuples
+        The n clusters of grouped data points
+    """
     #Pick k points at random for the initial cluster centres
     m=[plist[random.randrange(len(plist))] for it in range(0,k)]
 
@@ -44,6 +56,11 @@ def cluster(plist,n=10,k=3):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument("file", type=str, help='Specify the input file')
+    parser.add_argument('--iters', nargs=1, type=int, default=[20], help='Specify the number of iterations')
+    args = parser.parse_args()
+
     #Reading the file containing points in 3D space
     try:
         lines = open(args.file, 'r').readlines() #read file line by line
