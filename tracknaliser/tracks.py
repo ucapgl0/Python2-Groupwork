@@ -540,10 +540,10 @@ class Tracks:
         # plt.show()
         return alloc,m
 
-# # doctest
-# if __name__=='__main__':
-#     import doctest
-#     doctest.testmod()
+# doctest
+if __name__=='__main__':
+    import doctest
+    doctest.testmod()
 
 # # mocking
 # def test_the_internet():
