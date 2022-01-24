@@ -4,6 +4,6 @@ setup(
     name = "tracknaliser",
     version = "0.1.0",
     packages = find_packages(exclude=['*.test']),
-    install_requires = ['pytest','requests','matplotlib','numpy','numpydoc'],
+    install_requires = ['pytest','time', 'requests','matplotlib','numpy','numpydoc'],
     entry_points = {'console_scripts':['greentrack = tracknaliser.command:process']}
 )
