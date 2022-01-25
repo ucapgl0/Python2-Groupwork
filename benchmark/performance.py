@@ -1,17 +1,20 @@
 import numpy as np
-import matplotlib as plt
+from matplotlib import pyplot as plt
 from time import time
 from pathlib import Path
-import subprocess
+# import subprocess
 
-final_path=str(Path.cwd().parent)
-print('Final Path')
-print(final_path)       #TODO remove this when done
-subprocess.run('python'+str(final_path)+'/tracknaliser/clustering.py'+' samples.csv', shell=True)
+# final_path=str(Path.cwd().parent)
+# print('Final Path')
+# print(final_path)       #TODO remove this when done
+# subprocess.run('python'+str(final_path)+'/tracknaliser/clustering.py'+' samples.csv', shell=True)
 
-#import functions from tracknaliser 
+# #import functions from tracknaliser 
 
-from tracknaliser.clustering import cluster as cluster_list
+import sys
+sys.path.append(r'D:\1clone\tracknaliser-Working-Group-20\tracknaliser')
+
+from tracknaliser.clustering import *
 from tracknaliser.clustering_numpy import cluster as cluster_numpy 
 
 # Run both versions of the clustering scripts 
@@ -19,30 +22,25 @@ from tracknaliser.clustering_numpy import cluster as cluster_numpy
 # Plot time against required input with a single plot for both
 # Save as performance.png 
 
-num_points = 5
-
-N_points = np.logspace(100,10000,num_points) #Define an array of the number of points 
-times = np.zeros((num_points,2)) #array to store the times in 
+N_points = np.arange(100, 10001, 100)
+np.random.seed(0)
+test_point = np.random.random_sample((10000,3)) #Define an array of the number of points 
+times = np.zeros(len(N_points),2) #array to store the times in 
 
 i = 0 
-for N in N_points:      #Loop through all the number of points in the range 
+for i in range(len(N_points)):      #Loop through all the number of points in the range 
         #Generate the input files with a given number of points
 
-        # Generate N-1 random points (x,y) from the sample of points (integers in range 300)  
-
-        #Generate the path as a SingleTrack object
-        path = SingleTrack((1,1),(299,299),1,chain_code,r,p,elevation)
-
-
+        # Generate N-1 random points (x,y) from the sample of points (integers in range 300) 
+         
         # Run with clustering.py & benchmark 
-
         start_list =time()
-        cluster_l = cluster_list(path)
+        cluster_l = cluster_list(test_point[0:100*(i+1)])
         end_list = time()
         times[i,0] = end_list - start_list #benchmark time
         # Run with clustering_numpy.py & benchmark 
         start_numpy =time()
-        cluster_np = cluster_numpy(path)
+        cluster_np = cluster_numpy(test_point[0:100*(i+1)])
         end_numpy =time()
         times[i,1] = end_numpy - start_numpy
 # Plot both times as a single plot
@@ -57,5 +55,5 @@ plt.yscale('log')
 plt.xscale('log')
 
 # Save the plot 
-
 plt.savefig(r'performamce.png')
+plt.show()
