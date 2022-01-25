@@ -37,7 +37,7 @@ def load_tracksfile(path):
     return tracks_object
 
 
-def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_straight=6, n_tracks=300, save=True):
+def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_straight=6, n_tracks=300, save=False):
     """
     Find tracks that meet the given requirements from the given start to the given end points.
     
