@@ -1,9 +1,18 @@
 import numpy as np
 import matplotlib as plt
-from time import time 
-from tracks import SingleTrack # TODO this may need to be fixed 
-from clustering import cluster as cluster_list
-from clustering_numpy import cluster as cluster_numpy 
+from time import time
+from pathlib import Path
+import subprocess
+
+final_path=str(Path.cwd().parent)
+print('Final Path')
+print(final_path)       #TODO remove this when done
+subprocess.run('python'+str(final_path)+'/tracknaliser/clustering.py'+' samples.csv', shell=True)
+
+#import functions from tracknaliser 
+
+from tracknaliser.clustering import cluster as cluster_list
+from tracknaliser.clustering_numpy import cluster as cluster_numpy 
 
 # Run both versions of the clustering scripts 
 # For input files with a given number of points ranging from 100 - 10,000
@@ -21,9 +30,6 @@ for N in N_points:      #Loop through all the number of points in the range
 
         # Generate N-1 random points (x,y) from the sample of points (integers in range 300)  
 
-        chain_code =  str(zip(np.round(np.random.rand(N-1)*300), np.round(np.random.rand(N-1)*300)))
-        elevation = str(np.random.rand(N-1)) #randomly assorted elevations of points in [0,1] range
-            #TODO check that this works 
         #Generate the path as a SingleTrack object
         path = SingleTrack((1,1),(299,299),1,chain_code,r,p,elevation)
 
@@ -33,7 +39,6 @@ for N in N_points:      #Loop through all the number of points in the range
         start_list =time()
         cluster_l = cluster_list(path)
         end_list = time()
-
         times[i,0] = end_list - start_list #benchmark time
         # Run with clustering_numpy.py & benchmark 
         start_numpy =time()
@@ -53,4 +58,4 @@ plt.xscale('log')
 
 # Save the plot 
 
-plt.savefig('performamce.png')
+plt.savefig(r'performamce.png')
