@@ -4,10 +4,6 @@ from time import time
 from clustering import cluster as cluster_list
 from clustering_numpy import cluster as cluster_numpy 
 
-#Import the SingleTrack object from the tracks file
-from tracknaliser.tracks import SingleTrack
-
-
 # Run both versions of the clustering scripts 
 # For input files with a given number of points ranging from 100 - 10,000
 # Plot time against required input with a single plot for both
