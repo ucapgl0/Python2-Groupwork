@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib as plt
 from time import time 
-from clustering import cluster as cluster_list
-from clustering_numpy import cluster as cluster_numpy 
+from tracknaliser.clustering import cluster as cluster_list
+from tracknaliser.clustering_numpy import cluster as cluster_numpy 
 
 # Run both versions of the clustering scripts 
 # For input files with a given number of points ranging from 100 - 10,000
@@ -52,4 +52,4 @@ plt.xscale('log')
 
 # Save the plot 
 
-plt.savefig('performamce.png')
+plt.savefig(r'performamce.png')
