@@ -37,7 +37,7 @@ def load_tracksfile(path):
     return tracks_object
 
 
-def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_straight=6, n_tracks=300, save=True):
+def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_straight=6, n_tracks=300, save=False):
     """
     Find tracks that meet the given requirements from the given start to the given end points.
     
@@ -93,41 +93,41 @@ def query_tracks(start=(0, 0), end=(299, 299), min_steps_straight=1, max_steps_s
 #####
 
 class SingleTrack:
-    """A class to represent a single track's information."""
+    """
+    A class to represent a single track's information.
+    
+    Parameters
+    ----------
+    start: tuple of ints
+        The (x,y) corrdinates for the starting point of the track
+    end: tuple of ints
+        The (x,y) corrdinates for the end point of the track
+    resolution: int
+        The fixed horizontal distance between every two points in the track
+    cc: str
+        A simplified chain code string (values between 1-4), indicating directions of steps in 
+        the track. The length is N-1 for an N-points track
+    road: str
+        A string with the abbreviated specification of which type of road is used from residential, 
+        local and motorway (r, l, m). The length is N-1 for an N-points track
+    terrain: str
+        A string withthe abbreviiated specifitaion of the state of the road from paved, gravel or 
+        dirt (p, g, d). The length is N-1 for an N-points track
+    elevation: list of ints
+        The elevation of each point in the track, the length is N for an N-points track
+    distances: list of floats
+        A list of actual travelled distances between every two adjacent points in the track, the 
+        length is N-1 for an N-points track
+    coordinate_x: list of ints
+        A list of x_coordinates of all points in the track, the length is N for an N-points track
+    coordinate_y: list of ints
+        A list of y_coordinates of all points in the track, the length is N for an N-points track
+    coordinate: list of int tuples
+        A list of coordinates of all points in the track, including the starting ad end points. 
+        The length is N for an N-points track.
+    """
     def __init__(self, start_point, end_point, resolution, chain_code, road_type, terrain, elevation):
-        """
-        Set up the initial parameters for a single track.
-        
-        Parameters
-        ----------
-        start: tuple of ints
-            The (x,y) corrdinates for the starting point of the track
-        end: tuple of ints
-            The (x,y) corrdinates for the end point of the track
-        resolution: int
-            The fixed horizontal distance between every two points in the track
-        cc: str
-            A simplified chain code string (values between 1-4), indicating directions of steps in 
-            the track. The length is N-1 for an N-points track
-        road: str
-            A string with the abbreviated specification of which type of road is used from residential, 
-            local and motorway (r, l, m). The length is N-1 for an N-points track
-        terrain: str
-            A string withthe abbreviiated specifitaion of the state of the road from paved, gravel or 
-            dirt (p, g, d). The length is N-1 for an N-points track
-        elevation: list of ints
-            The elevation of each point in the track, the length is N for an N-points track
-        distances: list of floats
-            A list of actual travelled distances between every two adjacent points in the track, the 
-            length is N-1 for an N-points track
-        coordinate_x: list of ints
-            A list of x_coordinates of all points in the track, the length is N for an N-points track
-        coordinate_y: list of ints
-            A list of y_coordinates of all points in the track, the length is N for an N-points track
-        coordinate: list of int tuples
-            A list of coordinates of all points in the track, including the starting ad end points. 
-            The length is N for an N-points track. 
-        """
+        """Set up the initial parameters for a single track. """
         self.start = start_point
         self.end = end_point
         self.cc = chain_code
@@ -330,30 +330,30 @@ class SingleTrack:
 
 
 class Tracks:
-    """A class to represent n tracks' information."""
+    """
+    A class to represent n tracks' information.
+    
+    Parameters
+    ----------
+    start: tuple of ints
+        The (x,y) corrdinates for the starting point of the tracks
+    end: tuple of ints
+        The (x,y) corrdinates for the end point of the tracks
+    map_size: tuples of ints
+        The map size indicating the maximum values of integers in the coordinates
+    date: Datetime
+        The date time of the request in ISO8601 format
+    resolution: int
+        The fixed horizontal distance between every two points in the tracks
+    tracks: list of dictionaries
+        The list of dictionaries storing the chaincode, elevation, road, and terrain of every 
+        single track in the tracks. The length is N for Tracks with N single tracks in it
+    single_track: list of SingleTrack object
+        The list of every single track in the tracks, the length is N for Tracks with N single 
+        tracks in it.
+    """
     def __init__(self, start_point, end_point, map_size, date_time, resolution, tracks):
-        """
-        Set up the initial parameters for tracks.
-        
-        Parameters
-        ----------
-        start: tuple of ints
-            The (x,y) corrdinates for the starting point of the tracks
-        end: tuple of ints
-            The (x,y) corrdinates for the end point of the tracks
-        map_size: tuples of ints
-            The map size indicating the maximum values of integers in the coordinates
-        date: Datetime
-            The date time of the request in ISO8601 format
-        resolution: int
-            The fixed horizontal distance between every two points in the tracks
-        tracks: list of dictionaries
-            The list of dictionaries storing the chaincode, elevation, road, and terrain of every 
-            single track in the tracks. The length is N for Tracks with N single tracks in it
-        single_track: list of SingleTrack object
-            The list of every single track in the tracks, the length is N for Tracks with N single 
-            tracks in it.
-        """
+        """Set up the initial parameters for tracks."""
         self.start = (start_point[0], start_point[1])
         self.end = (end_point[0], end_point[1])
         self.map_size = map_size

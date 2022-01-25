@@ -16,6 +16,10 @@ Functions
    :members:
 .. automodule:: utils
    :members:
+.. automodule:: clustering
+   :members:
+.. automodule:: clustering_numpy
+   :members:
 
 Indices and tables
 ==================

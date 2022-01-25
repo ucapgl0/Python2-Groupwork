@@ -11,12 +11,25 @@ import argparse
 # 5. Define the cluster function [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 # 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument("file", type=str, help='Specify the input file')
-parser.add_argument('--iters', nargs=1, type=int, default=20, help='Specify the number of iterations')
-args = parser.parse_args()
 
 def cluster(plist,n=10,k=3):
+    """
+    Group the data points into k clusters.
+
+    Parameters
+    ----------
+    plist: list of int tuples
+        The coordinates of the data points
+    n: int
+        The number of iterations
+    k: int
+        The number of cluster centers.
+
+    Returns
+    -------
+    lists of int tuples
+        The n clusters of grouped data points
+    """
     m=np.random.randint(0,np.shape(parray)[0],size=k)
     for c in range(0,n):
         alloc=np.argmin(np.array([np.sqrt(np.sum((parray-m[j])**2,axis=1)) for j in range(0,k)]),axis=0)
@@ -24,6 +37,11 @@ def cluster(plist,n=10,k=3):
     return alloc,m
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument("file", type=str, help='Specify the input file')
+    parser.add_argument('--iters', nargs=1, type=int, default=[20], help='Specify the number of iterations')
+    args = parser.parse_args()
+
     #Reading the file containing points in 3D space
     try:
         lines = open(args.file, 'r').readlines() #read file line by line
@@ -35,7 +53,7 @@ if __name__ == "__main__":
     parray=np.array(plist) #create a numpy array from the data
 
     k=3 #The number of clusters of nearby points 
-    alloc,m=cluster(plist,args.iters[0],k=k)
+    alloc,m=cluster(plist,n=args.iters[0],k=k)
 
     #### OUTPUTING THE ALGORITHM RESULTS 
     # Text output

@@ -10,15 +10,6 @@ cd tracknaliser-Working-Group-20
 pip install .
 ```
 
-<!-- ## Usage
-    
-Invoke the tool with `greet <FirstName> <Secondname>` or use it on your own library:
-
-```python
-from greeting import greeter
-
-greeter.greet(user.name, user.lastname)
-``` -->
 
 # Brief Description
 
@@ -50,3 +41,7 @@ With a group of points (each point is represented as a tuple of its coordinates)
 nearby points. In the end, each cluster will (ideally) contain points that are close to each other, and far from the other clusters. The code (`clustering.py`) then prints some basic statistics about the resulting clusters.
 
 This algorithm is included in the library, and we do refactoring to make te code more efficient.
+
+Run the algorithm by `python clustering.py samples.csv [--iters <times of iteration>]`, or run the one with improved performance by `python clustering_numpy.py samples.csv [--iters <times of iteration>]`
+
+In order to see how the two versions of the code (with and without `numpy`) compare in terms of performance, especially as the input grows in size, the file `performance.py` runs the two versions on different input files which contain an increasing number of points, ranging from 100 to 10,000. In addition, the time required against the size of the input (number of points) is plotted to visualize the performance.
