@@ -27,7 +27,7 @@ For more details, please refer to the documentation page.
 
 ## Command Line Interface
 
-In addition, we create a command line tool that gives the coordinates, the travel time and the CO$_{2}$ emissions for the greenest trip.
+In addition, we create a command line tool that gives the coordinates, the travel time and the $CO_{2}$ emissions for the greenest trip.
 
 <!-- ## Usage -->
     

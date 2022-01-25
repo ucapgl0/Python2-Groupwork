@@ -106,7 +106,8 @@ class SingleTrack:
         The fixed horizontal distance between every two points in the track
     cc: str
         A simplified chain code string (values between 1-4), indicating directions of steps in 
-        the track. The length is N-1 for an N-points track
+        the track. The values 1-4 respectively stand for increasing x, increasing y, decreasing x, 
+        decreasing y. The length is N-1 for an N-points track
     road: str
         A string with the abbreviated specification of which type of road is used from residential, 
         local and motorway (r, l, m). The length is N-1 for an N-points track
@@ -523,7 +524,7 @@ class Tracks:
         list of tuples
             The results returned by the algorithm
         """
-        from clustering import cluster
+        from tracknaliser.clustering import cluster
         kmeans_coordinates=[]
         #create list of coordinates (in tuple form) for kmeans algorithm clustering
         for i in range(len(self.tracks)):
@@ -540,11 +541,13 @@ class Tracks:
         # plt.show()
         return alloc,m
 
-# doctest
+
 if __name__=='__main__':
+    # doctest
     import doctest
     doctest.testmod()
 
-# # kmeans
-# tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
-# print(tracks.kmeans(10,3))
+    # # kmeans
+    # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
+    # print(tracks.kmeans(10,3))
+    

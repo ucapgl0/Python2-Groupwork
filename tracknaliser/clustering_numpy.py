@@ -12,7 +12,7 @@ import argparse
 # 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
 
-def cluster(plist,n=10,k=3):
+def cluster(parray,n=10,k=3):
     """
     Group the data points into k clusters.
 
