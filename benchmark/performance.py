@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from time import time
-from pathlib import Path
+
 # import subprocess
 
 # final_path=str(Path.cwd().parent)
@@ -12,9 +12,9 @@ from pathlib import Path
 # #import functions from tracknaliser 
 
 import sys
-sys.path.append(r'D:\1clone\tracknaliser-Working-Group-20\tracknaliser')
+sys.path.append('../tracknaliser')
 
-from tracknaliser.clustering import *
+from tracknaliser.clustering import cluster as cluster_list
 from tracknaliser.clustering_numpy import cluster as cluster_numpy 
 
 # Run both versions of the clustering scripts 
@@ -25,7 +25,7 @@ from tracknaliser.clustering_numpy import cluster as cluster_numpy
 N_points = np.arange(100, 10001, 100)
 np.random.seed(0)
 test_point = np.random.random_sample((10000,3)) #Define an array of the number of points 
-times = np.zeros(len(N_points),2) #array to store the times in 
+times = np.zeros((2,len(N_points)), dtype=float) #array to store the times in 
 
 i = 0 
 for i in range(len(N_points)):      #Loop through all the number of points in the range 
@@ -37,12 +37,12 @@ for i in range(len(N_points)):      #Loop through all the number of points in th
         start_list =time()
         cluster_l = cluster_list(test_point[0:100*(i+1)])
         end_list = time()
-        times[i,0] = end_list - start_list #benchmark time
+        times[0][i] = end_list - start_list #benchmark time
         # Run with clustering_numpy.py & benchmark 
         start_numpy =time()
         cluster_np = cluster_numpy(test_point[0:100*(i+1)])
         end_numpy =time()
-        times[i,1] = end_numpy - start_numpy
+        times[1][i] = end_numpy - start_numpy
 # Plot both times as a single plot
 
 plt.plot(N_points, times[0], label = "Native python method")
