@@ -256,7 +256,7 @@ def co2_emission(road, terrain, elevation_change, distance):
     co2 = 0.054 * factor_road * factor_terrain * factor_slope * distance * a_liter_co2
     return co2
 
-# doctest
-if __name__=='__main__':
-    import doctest
-    doctest.testmod()
+# # doctest
+# if __name__=='__main__':
+#     import doctest
+#     doctest.testmod()

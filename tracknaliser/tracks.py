@@ -542,12 +542,11 @@ class Tracks:
         return alloc,m
 
 
-if __name__=='__main__':
-    # doctest
-    import doctest
-    doctest.testmod()
+# if __name__=='__main__':
+#     # doctest
+#     import doctest
+#     doctest.testmod()
 
     # # kmeans
     # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
     # print(tracks.kmeans(10,3))
-    
