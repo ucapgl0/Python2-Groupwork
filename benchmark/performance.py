@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from time import time
 # #import functions from tracknaliser
 import sys
-sys.path.append('../tracknaliser')
+sys.path.append('.')
 from tracknaliser.clustering import cluster as cluster_list
 from tracknaliser.clustering_numpy import cluster as cluster_numpy
 # Run both versions of the clustering scripts
@@ -38,5 +38,5 @@ plt.yscale('log')
 plt.xscale('log')
 
 # Save the plot 
-plt.savefig(r'performamce.png')
+plt.savefig('benchmark/performamce.png')
 plt.show()
