@@ -510,19 +510,21 @@ class Tracks:
         return self.single_track[x]
 
 
-    def kmeans(self,n,cluster_number):
+    def kmeans(self,iters,cluster_number):
         """
         Call the function to run k-means algorithm.
 
         Parameters
         ----------
+        iters: int
+            The parameter indicating the number of iterations passed to the algorithm
         cluster_number: int
             The parameter indicating the number of cluster centers passed to the algorithm.
 
         Returns
         -------
-        list of tuples
-            The results returned by the algorithm
+        lists of int tuples
+            The result of n clusters of grouped data points returned by the algorithm
         """
         from tracknaliser.clustering import cluster
         kmeans_coordinates=[]
@@ -530,7 +532,7 @@ class Tracks:
         for i in range(len(self.tracks)):
             kmeans_coordinates.append((self.single_track[i].time(),self.single_track[i].distance(),self.single_track[i].co2()))
         #print(len(kmeans_coordinates))
-        alloc,m=cluster(kmeans_coordinates,n=10,k=cluster_number)
+        alloc,m=cluster(kmeans_coordinates,n=iters,k=cluster_number)
         # #Visual output
         # from matplotlib import pyplot as plt 
         # fig = plt.figure()

@@ -27,7 +27,7 @@ jobs:
         pip install requests
         pip install matplotlib
 
-    - name: Running pytest
+    - name: Running tests
       run: |
         pytest test_tracks.py
         python docstring_test.py

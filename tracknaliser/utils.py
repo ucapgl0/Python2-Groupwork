@@ -2,7 +2,6 @@ import requests
 import mimetypes
 import os
 import json
-import doctest
 
 def validation_load(path):
     """
