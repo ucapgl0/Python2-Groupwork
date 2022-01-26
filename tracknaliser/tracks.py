@@ -1,4 +1,6 @@
 import json
+import sys
+sys.path.append('.')
 import tracknaliser.utils as utils
 import matplotlib.pyplot as plt
 import heapq
@@ -395,7 +397,7 @@ class Tracks:
         
         Examples
         --------
-        >>> tracks = load_tracksfile('./short_tracks.json')
+        >>> tracks = load_tracksfile('D:/1clone/working_group_20/tracknaliser-Working-Group-20/short_tracks.json')
         >>> print(len(tracks))
         5
         """
@@ -549,6 +551,6 @@ class Tracks:
 #     import doctest
 #     doctest.testmod()
 
-    # # kmeans
-    # tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
-    # print(tracks.kmeans(10,3))
+# # kmeans
+# tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
+# print(tracks.kmeans(10,3))
