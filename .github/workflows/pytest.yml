@@ -30,9 +30,6 @@ jobs:
     - name: Running pytest
       run: |
         pytest test_tracks.py
+        python docstring_test.py
 
-    # - name: Running doctest
-    #   run: |
-    #     python tracks.py
-    #     python utils.py
         
