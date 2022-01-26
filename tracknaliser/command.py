@@ -1,5 +1,7 @@
 import argparse
 import datetime
+import sys
+sys.path.append('.')
 from tracknaliser.tracks import query_tracks
 
 def process():
