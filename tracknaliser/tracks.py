@@ -397,7 +397,7 @@ class Tracks:
         
         Examples
         --------
-        >>> tracks = load_tracksfile('D:/1clone/working_group_20/tracknaliser-Working-Group-20/short_tracks.json')
+        >>> tracks = load_tracksfile('./short_tracks.json')
         >>> print(len(tracks))
         5
         """
@@ -544,13 +544,3 @@ class Tracks:
         #     ax.scatter([a[0] for a in alloc_plist],[a[1] for a in alloc_plist],[a[2] for a in alloc_plist])
         # plt.show()
         return alloc,m
-
-
-# if __name__=='__main__':
-#     # doctest
-#     import doctest
-#     doctest.testmod()
-
-# # kmeans
-# tracks = query_tracks(start=(0, 0), end=(55, 55), n_tracks=100, save=False)
-# print(tracks.kmeans(10,3))
