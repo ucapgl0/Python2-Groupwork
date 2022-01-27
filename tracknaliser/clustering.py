@@ -87,9 +87,11 @@ if __name__ == "__main__":
 
     #### OUTPUTING THE ALGORITHM RESULTS 
     # Text output
+    
     for i in range(k):
         alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i]
-        print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
+        print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " +
+         str(len(alloc_plist)) + " points and contains points" + str(alloc_i[i]))
 
     # #Visual output
     # from matplotlib import pyplot as plt 
