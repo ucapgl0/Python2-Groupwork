@@ -1,4 +1,4 @@
-import random
+from  random import *
 import numpy as np
 import argparse
 
@@ -12,7 +12,7 @@ import argparse
 # 6. Improving readability by explicitly showing dependence on k. [x] 94b51d498c123896b9e6dce3f68c49b9148d7cc0
 
 
-def cluster(parray,n=10,k=3):
+def cluster(plist,n=10,k=3):
     """
     Group the data points into k clusters.
 
@@ -32,11 +32,26 @@ def cluster(parray,n=10,k=3):
     list of float tuples
         The coordinates of clusters centers
     """
-    m=np.random.randint(0,np.shape(parray)[0],size=k)
-    for c in range(0,n):
-        alloc=np.argmin(np.array([np.sqrt(np.sum((parray-m[j])**2,axis=1)) for j in range(0,k)]),axis=0)
-        m=np.array([np.mean(parray[alloc==j],axis=0) if np.all(np.isnan(np.mean(parray[alloc==j],axis=0)))==False else np.array([0,0,0]) for j in range(0,k)])
-    return alloc,m
+    parray=np.array(plist)
+    centers = []
+    for i in range(k):
+        centers.append(parray[randrange(len(parray))])
+    centers = np.array(centers)
+    alloc = np.array([None] * len(parray))
+    alloc_l = []
+    for i in range(n):
+        alloc=np.argmin(np.linalg.norm(parray-centers[:,None],axis=2),axis=0)
+        for ii in range(k):
+            alloc_p = parray[np.argwhere(alloc == ii)]
+            centers[ii] = np.mean(alloc_p,axis=0)
+            if i == n-1:
+                alloc_i = []
+                for j in range(len(alloc)):
+                    if alloc[j] == ii:
+                        alloc_i.append(j)
+                alloc_l.append(alloc_i)
+        
+    return alloc_l, centers
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -55,13 +70,13 @@ if __name__ == "__main__":
     parray=np.array(plist) #create a numpy array from the data
 
     k=3 #The number of clusters of nearby points 
-    alloc,m=cluster(plist,n=args.iters[0],k=k)
+    alloc_i, center = cluster(plist,n=args.iters[0],k=k)
 
     #### OUTPUTING THE ALGORITHM RESULTS 
     # Text output
     for i in range(k):
-      alloc_plist=[p for j, p in enumerate(plist) if alloc[j] == i]
-      print("Cluster " + str(i) + " is centred at " + str(m[i]) + " and has " + str(len(alloc_plist)) + " points.")
+      print("Cluster " + str(i) + " is centred at " + str(center[i]) +
+       " and contains points" + str(alloc_i[i]))
 
       # #Visual output
       # from matplotlib import pyplot as plt 
