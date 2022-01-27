@@ -16,12 +16,12 @@ def test_chaincode_conver_to_coordinates(start_point, chain_code, correct_coordi
 
 # Negative test for incorrect path
 path_1 = "./samples.csv"
-def test_imporper_path_input():
+def test_improper_path_input():
     with pytest.raises(TypeError) as exception:
         tracks.load_tracksfile(path_1)
 
 # Negative test for query
-def test_imporper_type_coordinate_input():
+def test_improper_type_coordinate_input():
     with pytest.raises(TypeError) as exception:
         tracks.query_tracks(start=('a', 30)) 
 
@@ -51,7 +51,7 @@ def test_tracks_shortest():
     assert local_tracks.shortest().distance() ==  5.000038499765378
 
 # Negative test for get_track method
-def test_imporper_x_for_get_track():
+def test_improper_x_for_get_track():
     with pytest.raises(ValueError) as exception:
         local_tracks.get_track(100)
 
