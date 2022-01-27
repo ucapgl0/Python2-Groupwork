@@ -27,12 +27,12 @@ def cluster(plist,n=10,k=3):
 
     Returns
     -------
-    list of ints
-        The indices of clusters in which each data point is grouped
+    list of int lists
+        The lists with the points indices that belong to each group
     list of float tuples
         The coordinates of clusters centers
     """
-    parray=np.array(plist)
+    parray=np.array(plist) #create a numpy array from the data
     centers = []
     for i in range(k):
         centers.append(parray[randrange(len(parray))])
@@ -67,7 +67,6 @@ if __name__ == "__main__":
     plist=[] #point list: list containing each point coordinates (written as a tuple)
     for line in lines: #iterate through the line and add each point coordinates
         plist.append(tuple(map(float, line.strip().split(','))))
-    parray=np.array(plist) #create a numpy array from the data
 
     k=3 #The number of clusters of nearby points 
     alloc_i, center = cluster(plist,n=args.iters[0],k=k)
