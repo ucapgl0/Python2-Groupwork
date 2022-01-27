@@ -27,8 +27,10 @@ def cluster(parray,n=10,k=3):
 
     Returns
     -------
-    lists of int tuples
-        The n clusters of grouped data points
+    list of ints
+        The indices of clusters in which each data point is grouped
+    list of float tuples
+        The coordinates of clusters centers
     """
     m=np.random.randint(0,np.shape(parray)[0],size=k)
     for c in range(0,n):
@@ -39,7 +41,7 @@ def cluster(parray,n=10,k=3):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument("file", type=str, help='Specify the input file')
-    parser.add_argument('--iters', nargs=1, type=int, default=[20], help='Specify the number of iterations')
+    parser.add_argument('--iters', nargs=1, type=int, default=[10], help='Specify the number of iterations')
     args = parser.parse_args()
 
     #Reading the file containing points in 3D space

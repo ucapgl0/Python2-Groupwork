@@ -27,17 +27,23 @@ def cluster(plist,n=10,k=3):
 
     Returns
     -------
-    lists of int tuples
-        The n clusters of grouped data points
+    list of int lists
+        The lists with the points indices that belong to each group
+    list of ints
+        The indices of clusters in which each data point is grouped
+    list of float tuples
+        The coordinates of clusters centers
     """
     #Pick k points at random for the initial cluster centres
     m=[plist[random.randrange(len(plist))] for it in range(0,k)]
 
     alloc=[None]*len(plist)  #list which contains allocates point to one of the three clusters
+    index = []  # list storing each point's index
     N=0
     while N<n: #iterate the k-means algorithm
         for i in range(len(plist)):  #iterate through the list of all points 
             p=plist[i] #index of the point in the point list
+            index.append(i)
             d=[None] * k #list of distances of a point to each of the cluster centres
             for q in range(0,k):
                 d[q]=math.sqrt((p[0]-m[q][0])**2 + (p[1]-m[q][1])**2 + (p[2]-m[q][2])**2) #distance of the point to the q-th cluster
@@ -52,13 +58,19 @@ def cluster(plist,n=10,k=3):
             #use such (virtual) point to be a new cluster centre
             m[i]=new_mean
         N=N+1 #repeat the above procedure 10 times
-    return alloc,m
+
+    alloc_i= []   # a list with the points indices that belong to each group
+    for i in range(k):
+        alloc_p=[p for j, p in enumerate(list(set(index))) if alloc[j] == i]
+        alloc_i.append(alloc_p)
+
+    return alloc_i,alloc,m
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument("file", type=str, help='Specify the input file')
-    parser.add_argument('--iters', nargs=1, type=int, default=[20], help='Specify the number of iterations')
+    parser.add_argument('--iters', nargs=1, type=int, default=[10], help='Specify the number of iterations')
     args = parser.parse_args()
 
     #Reading the file containing points in 3D space
@@ -71,7 +83,7 @@ if __name__ == "__main__":
         plist.append(tuple(map(float, line.strip().split(','))))
     
     k=3 #The number of clusters of nearby points 
-    alloc,m=cluster(plist,n=args.iters[0],k=k)
+    alloc_i,alloc,m=cluster(plist,n=args.iters[0],k=k)
 
     #### OUTPUTING THE ALGORITHM RESULTS 
     # Text output
