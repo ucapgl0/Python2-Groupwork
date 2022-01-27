@@ -38,5 +38,5 @@ plt.yscale('log')
 plt.xscale('log')
 
 # Save the plot 
-plt.savefig('benchmark/performamce.png')
+plt.savefig('benchmark/performance.png')
 plt.show()
